@@ -1,0 +1,235 @@
+package de.maxhenkel.voicechat.gui.widgets;
+
+import de.maxhenkel.voicechat.Voicechat;
+import de.maxhenkel.voicechat.VoicechatClient;
+import de.maxhenkel.voicechat.debug.VoicechatUncaughtExceptionHandler;
+import de.maxhenkel.voicechat.gui.ScreenBase;
+import de.maxhenkel.voicechat.voice.client.*;
+import de.maxhenkel.voicechat.voice.client.speaker.Speaker;
+import de.maxhenkel.voicechat.voice.client.speaker.SpeakerException;
+import de.maxhenkel.voicechat.voice.client.speaker.SpeakerManager;
+import de.maxhenkel.voicechat.voice.common.AudioUtils;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.Style;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TextFormatting;
+
+import java.util.Collections;
+
+import javax.annotation.Nullable;
+
+public class MicTestButton extends ToggleImageButton implements ImageButton.TooltipSupplier {
+
+    private static final ResourceLocation MICROPHONE = new ResourceLocation(Voicechat.MODID, "textures/icons/microphone_button.png");
+    private static final ITextComponent TEST_DISABLED = new TextComponentTranslation("message.voicechat.mic_test.disabled");
+    private static final ITextComponent TEST_ENABLED = new TextComponentTranslation("message.voicechat.mic_test.enabled");
+    private static final ITextComponent TEST_UNAVAILABLE = new TextComponentTranslation("message.voicechat.mic_test_unavailable").setStyle(new Style().setColor(TextFormatting.RED));
+
+    private boolean micActive;
+    @Nullable
+    private VoiceThread voiceThread;
+    @Nullable
+    private final MicListener micListener;
+    private final boolean raw;
+    @Nullable
+    private final ClientVoicechat client;
+
+    public MicTestButton(int id, int xIn, int yIn, boolean raw, @Nullable MicListener micListener) {
+        super(id, xIn, yIn, MICROPHONE, null, null, null);
+        this.raw = raw;
+        this.micListener = micListener;
+        this.client = ClientManager.getClient();
+        // enabled = client == null || client.getSoundManager() != null;
+
+        stateSupplier = () -> !micActive;
+        tooltipSupplier = this;
+    }
+
+    public MicTestButton(int id, int xIn, int yIn, boolean raw) {
+        this(id, xIn, yIn, raw, null);
+    }
+
+    @Override
+    public void drawButton(Minecraft mc, int mouseX, int mouseY) {
+        super.drawButton(mc, mouseX, mouseY);
+        updateLastRender();
+    }
+
+    public void updateLastRender() {
+        if (visible && voiceThread != null) {
+            voiceThread.updateLastRender();
+        }
+    }
+
+    public void setMicActive(boolean micActive) {
+        this.micActive = micActive;
+    }
+
+    public boolean isHovered() {
+        return hovered;
+    }
+
+    public boolean isMicActive() {
+        return micActive;
+    }
+
+    @Override
+    public void onPress() {
+        setMicActive(!micActive);
+        if (micActive) {
+            close();
+            try {
+                voiceThread = new VoiceThread();
+                voiceThread.start();
+            } catch (Exception e) {
+                setMicActive(false);
+                enabled = false;
+                Voicechat.LOGGER.error("Microphone error", e);
+            }
+        } else {
+            close();
+        }
+    }
+
+    private void close() {
+        if (voiceThread != null) {
+            voiceThread.close();
+            voiceThread = null;
+        }
+    }
+
+    public void stop() {
+        close();
+        setMicActive(false);
+    }
+
+    @Override
+    public void onTooltip(ImageButton button, int mouseX, int mouseY) {
+    	ScreenBase screen = (ScreenBase) mc.currentScreen;
+        if (screen == null) {
+            return;
+        }
+        if (!enabled) {
+            screen.drawTooltip(Collections.singletonList(TEST_UNAVAILABLE.getFormattedText()), mouseX, mouseY);
+            return;
+        }
+        if (micActive) {
+            screen.drawTooltip(Collections.singletonList(TEST_ENABLED.getFormattedText()), mouseX, mouseY);
+        } else {
+            screen.drawTooltip(Collections.singletonList(TEST_DISABLED.getFormattedText()), mouseX, mouseY);
+        }
+        GlStateManager.disableLighting();
+    }
+
+    private class VoiceThread extends Thread {
+
+        private final Speaker speaker;
+        private boolean running;
+        private long lastRender;
+        private MicThread micThread;
+        private boolean usesOwnMicThread;
+        // @Nullable
+        // private SoundManager ownSoundManager;
+
+        public VoiceThread() throws SpeakerException, MicrophoneException {
+            this.running = true;
+            setDaemon(true);
+            setName("VoiceTestingThread");
+            setUncaughtExceptionHandler(new VoicechatUncaughtExceptionHandler());
+
+            micThread = client != null ? client.getMicThread() : null;
+            if (micThread == null) {
+                micThread = new MicThread(client, null);
+                usesOwnMicThread = true;
+            }
+
+            // SoundManager soundManager;
+            // if (client == null) {
+            //     soundManager = new SoundManager();
+            //     ownSoundManager = soundManager;
+            // } else {
+            //     soundManager = client.getSoundManager();
+            // }
+
+            // if (soundManager == null) {
+            //     throw new SpeakerException("No sound manager");
+            // }
+
+            speaker = SpeakerManager.createSpeaker(null/*soundManager*/, null);
+
+            updateLastRender();
+            setMicLocked(true);
+        }
+
+        @Override
+        public void run() {
+            while (running) {
+                if (System.currentTimeMillis() - lastRender > 500L) {
+                    break;
+                }
+                if (micThread.isClosed()) {
+                    break;
+                }
+                short[] buff = raw ? micThread.pollMic() : micThread.pollProcessedAudio(true);
+                if (buff == null) {
+                    continue;
+                }
+
+                if (micListener != null) {
+                    micListener.onMicValue(AudioUtils.getHighestAudioLevel(buff));
+                }
+
+                if (raw || micThread.shouldTransmitAudio()) {
+                    play(buff);
+                }
+            }
+            speaker.close();
+            setMicLocked(false);
+            if (micListener != null) {
+                micListener.onStop();
+            }
+            if (usesOwnMicThread) {
+                micThread.close();
+            }
+            // if (ownSoundManager != null) {
+            //     ownSoundManager.close();
+            // }
+            setMicActive(false);
+            Voicechat.LOGGER.info("Mic test audio channel closed");
+        }
+
+        private void play(short[] buff) {
+            speaker.play(buff, VoicechatClient.CLIENT_CONFIG.voiceChatVolume.get().floatValue(), null);
+        }
+
+        public void updateLastRender() {
+            lastRender = System.currentTimeMillis();
+        }
+
+        private void setMicLocked(boolean locked) {
+            micThread.setMicrophoneLocked(locked);
+        }
+
+        public void close() {
+            if (!running) {
+                return;
+            }
+            Voicechat.LOGGER.info("Stopping mic test audio channel");
+            running = false;
+            try {
+                join();
+            } catch (InterruptedException e) {
+                Voicechat.LOGGER.warn("Failed to close microphone", e);
+            }
+        }
+    }
+
+    public interface MicListener {
+        void onMicValue(double dB);
+
+        void onStop();
+    }
+}

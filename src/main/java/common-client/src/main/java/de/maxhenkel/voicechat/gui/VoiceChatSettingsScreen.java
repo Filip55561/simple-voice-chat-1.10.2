@@ -1,0 +1,161 @@
+package de.maxhenkel.voicechat.gui;
+
+import de.maxhenkel.voicechat.Voicechat;
+import de.maxhenkel.voicechat.VoicechatClient;
+import de.maxhenkel.voicechat.gui.audiodevice.SelectMicrophoneScreen;
+import de.maxhenkel.voicechat.gui.audiodevice.SelectSpeakerScreen;
+import de.maxhenkel.voicechat.gui.widgets.*;
+import de.maxhenkel.voicechat.natives.SpeexManager;
+import de.maxhenkel.voicechat.voice.client.*;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
+import de.maxhenkel.voicechat.voice.client.speaker.AudioType;
+import net.minecraft.util.text.TextComponentTranslation;
+
+import javax.annotation.Nullable;
+import java.io.IOException;
+import java.util.Collections;
+
+public class VoiceChatSettingsScreen extends VoiceChatScreenBase {
+
+    private static final ResourceLocation TEXTURE = new ResourceLocation(Voicechat.MODID, "textures/gui/gui_voicechat_settings.png");
+    private static final ITextComponent TITLE = new TextComponentTranslation("gui.voicechat.voice_chat_settings.title");
+
+    private static final ITextComponent ASSIGN_TOOLTIP = new TextComponentTranslation("message.voicechat.press_to_reassign_key");
+    private static final ITextComponent PUSH_TO_TALK = new TextComponentTranslation("message.voicechat.activation_type.ptt");
+    private static final ITextComponent SELECT_MICROPHONE = new TextComponentTranslation("message.voicechat.select_microphone");
+    private static final ITextComponent SELECT_SPEAKER = new TextComponentTranslation("message.voicechat.select_speaker");
+    private static final ITextComponent BACK = new TextComponentTranslation("message.voicechat.back");
+
+    @Nullable
+    private final GuiScreen parent;
+    private VoiceActivationSlider voiceActivationSlider;
+    private MicTestButton micTestButton;
+    private KeybindButton keybindButton;
+
+    public VoiceChatSettingsScreen(@Nullable GuiScreen parent) {
+        super(TITLE, 248, 219);
+        this.parent = parent;
+    }
+
+    public VoiceChatSettingsScreen() {
+        this(null);
+    }
+
+    @Override
+    public void initGui() {
+        super.initGui();
+
+        int y = guiTop + 20;
+
+        addButton(new VoiceSoundSlider(0, guiLeft + 10, y, xSize - 20, 20));
+        y += 21;
+        boolean agc = SpeexManager.canUseAgc();
+        MicAmplificationSlider micAmp = new MicAmplificationSlider(1, guiLeft + 10 + (agc ? 80 + 1 : 0), y, xSize - 20 - (agc ? 80 : 0) - 1, 20);
+        if (agc) {
+            addButton(new AgcButton(2, guiLeft + 10, y, 80, 20, active -> micAmp.enabled = !active));
+        }
+        addButton(micAmp);
+        y += 21;
+        addButton(new DenoiserButton(3, guiLeft + 10, y, xSize - 20, 20));
+        y += 21;
+
+        voiceActivationSlider = new VoiceActivationSlider(5, guiLeft + 10, y + 21 * 2, xSize - 20, 20);
+        VadButton vadButton = new VadButton(6, guiLeft + 10, y + 21, xSize - 20, 20);
+        micTestButton = new MicTestButton(4, guiLeft + 10, y, false, voiceActivationSlider);
+        keybindButton = new KeybindButton(7, KeyEvents.KEY_PTT, guiLeft + 10, y + 21, xSize - 20, 20, PUSH_TO_TALK);
+        addButton(new MicActivationButton(8, guiLeft + 10 + 20 + 1, y, xSize - 20 - 20 - 1, 20, type -> {
+            vadButton.visible = MicrophoneActivationType.VOICE.equals(type);
+            keybindButton.visible = MicrophoneActivationType.PTT.equals(type);
+            keybindButton.resetListening();
+        }));
+        addButton(micTestButton);
+        addButton(vadButton);
+        addButton(voiceActivationSlider);
+        addButton(keybindButton);
+        y += 21 * 3;
+
+        addButton(new EnumButton<AudioType>(9, guiLeft + 10, y, xSize - 20, 20, VoicechatClient.CLIENT_CONFIG.audioType) {
+
+            @Override
+            protected ITextComponent getText(AudioType type) {
+                return new TextComponentTranslation("message.voicechat.audio_type", type.getText());
+            }
+
+            @Override
+            protected void onUpdate(AudioType type) {
+                ClientVoicechat client = ClientManager.getClient();
+                if (client != null) {
+                    micTestButton.stop();
+                    client.reloadAudio();
+                }
+            }
+        });
+        y += 21;
+        addButton(new ButtonBase(10, guiLeft + 10, y, (xSize - 20) / 2 - 1, 20, SELECT_MICROPHONE) {
+            @Override
+            public void onPress() {
+                mc.displayGuiScreen(new SelectMicrophoneScreen(VoiceChatSettingsScreen.this));
+            }
+        });
+        addButton(new ButtonBase(11, guiLeft + xSize / 2 + 2, y, (xSize - 20) / 2 - 1, 20, SELECT_SPEAKER) {
+            @Override
+            public void onPress() {
+                mc.displayGuiScreen(new SelectSpeakerScreen(VoiceChatSettingsScreen.this));
+            }
+        });
+        y += 21;
+        if (!isIngame() && parent != null) {
+            addButton(new ButtonBase(12, guiLeft + 10, y, xSize - 20, 20, BACK) {
+                @Override
+                public void onPress() {
+                    mc.displayGuiScreen(parent);
+                }
+            });
+        }
+    }
+
+    @Override
+    public void renderBackground(int mouseX, int mouseY, float delta) {
+        mc.getTextureManager().bindTexture(TEXTURE);
+        if (isIngame()) {
+            drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+        }
+    }
+
+    @Override
+    public void renderForeground(int mouseX, int mouseY, float delta) {
+        int titleWidth = fontRendererObj.getStringWidth(TITLE.getUnformattedComponentText());
+        fontRendererObj.drawString(TITLE.getFormattedText(), guiLeft + (xSize - titleWidth) / 2, guiTop + 7, getFontColor());
+
+        if (voiceActivationSlider == null) {
+            return;
+        }
+
+        ITextComponent sliderTooltip = voiceActivationSlider.getHoverText();
+        if (voiceActivationSlider.isHovered() && sliderTooltip != null) {
+        	drawTooltip(Collections.singletonList(sliderTooltip.getFormattedText()), mouseX, mouseY);
+        } else if (micTestButton.isHovered()) {
+            micTestButton.onTooltip(micTestButton, mouseX, mouseY);
+        } else if (keybindButton.isHovered()) {
+        	drawTooltip(Collections.singletonList(ASSIGN_TOOLTIP.getFormattedText()), mouseX, mouseY);
+        }
+    }
+
+    @Override
+    protected void keyTyped(char typedChar, int keyCode) throws IOException {
+        if (keybindButton.keyPressed(keyCode)) {
+            return;
+        }
+        super.keyTyped(typedChar, keyCode);
+    }
+
+    @Override
+    protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
+        if (keybindButton.mousePressed(mouseButton)) {
+            return;
+        }
+        super.mouseClicked(mouseX, mouseY, mouseButton);
+    }
+}
