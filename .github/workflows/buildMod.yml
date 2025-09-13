@@ -20,6 +20,11 @@ jobs:
             - name: Build Jar
               run: ./gradlew build
 
+            # TODO: THINK OF A BETTER WAY TO DO THISS
+            - name: Prepare Artifact
+              run: |
+                rm -f build/libs/*-sources.jar
+
             - name: Upload Jar Artifact
               uses: actions/upload-artifact@v4
               with:
