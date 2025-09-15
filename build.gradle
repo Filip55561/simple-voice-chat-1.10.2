@@ -20,7 +20,7 @@ apply plugin: 'com.github.johnrengelman.shadow'
 
 //Only edit below this line, the above code adds and enables the nessasary things for Forge to be setup.
 
-version = "1.0"
+version = "1.0.1"
 group= "de.maxhenkel.voicechat" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "voicechat"
 
