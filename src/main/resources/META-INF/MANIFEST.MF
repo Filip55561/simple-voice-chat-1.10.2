@@ -1,0 +1,3 @@
+Manifest-Version: 1.0
+FMLCorePlugin: de.maxhenkel.voicechat.mixin.MixinCoreMod
+FMLCorePluginContainsFMLMod: true
