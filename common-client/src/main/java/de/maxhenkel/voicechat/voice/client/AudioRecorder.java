@@ -293,9 +293,9 @@ public class AudioRecorder {
 
     private void send(ITextComponent msg) {
         Minecraft mc = Minecraft.getMinecraft();
-        EntityPlayerSP player = mc.player;
-        if (player != null && mc.world != null) {
-            player.sendMessage(msg);
+        EntityPlayerSP player = mc.thePlayer;
+        if (player != null && mc.theWorld != null) {
+            player.addChatMessage(msg);
         } else {
             Voicechat.LOGGER.info("{}", msg.getUnformattedComponentText());
         }

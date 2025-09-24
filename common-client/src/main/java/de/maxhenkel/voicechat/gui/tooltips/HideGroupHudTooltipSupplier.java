@@ -1,6 +1,6 @@
 package de.maxhenkel.voicechat.gui.tooltips;
-
 import de.maxhenkel.voicechat.VoicechatClient;
+import de.maxhenkel.voicechat.gui.ScreenBase;
 import de.maxhenkel.voicechat.gui.widgets.ImageButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.text.TextComponentTranslation;
@@ -14,9 +14,9 @@ public class HideGroupHudTooltipSupplier implements ImageButton.TooltipSupplier 
     public static final TextComponentTranslation SHOW_GROUP_HUD_DISABLED = new TextComponentTranslation("message.voicechat.show_group_hud.disabled");
 
 
-    private final GuiScreen screen;
+    private final ScreenBase screen;
 
-    public HideGroupHudTooltipSupplier(GuiScreen screen) {
+    public HideGroupHudTooltipSupplier(ScreenBase screen) {
         this.screen = screen;
     }
 
@@ -30,7 +30,7 @@ public class HideGroupHudTooltipSupplier implements ImageButton.TooltipSupplier 
             tooltip.add(SHOW_GROUP_HUD_DISABLED.getUnformattedComponentText());
         }
 
-        screen.drawHoveringText(tooltip, mouseX, mouseY);
+        screen.drawTooltip(tooltip, mouseX, mouseY);
     }
 
 }

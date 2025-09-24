@@ -35,7 +35,9 @@ public abstract class Voicechat {
 
         initializeConfigs();
 
+        LOGGER.info("Initializing NetManager...");
         CommonCompatibilityManager.INSTANCE.getNetManager().init();
+        LOGGER.info("NetManager initialized");
         SERVER = new ServerVoiceEvents();
         PluginManager.instance().init();
         initPlugins();

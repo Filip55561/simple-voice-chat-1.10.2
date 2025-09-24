@@ -5,7 +5,7 @@ repositories {
 
 buildscript {
     repositories {
-        maven { url = "https://repo.spongepowered.org/maven" }
+        maven { url "https://repo.spongepowered.org/maven" }
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.2.5'
@@ -20,7 +20,10 @@ apply plugin: 'com.github.johnrengelman.shadow'
 
 //Only edit below this line, the above code adds and enables the nessasary things for Forge to be setup.
 
-version = "1.0.1"
+version = "1.0.2"
+ext {
+     mod_compatible_version= "2.6"
+}
 group= "de.maxhenkel.voicechat" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "voicechat"
 
@@ -32,7 +35,6 @@ compileJava {
 minecraft {
     version = "1.10.2-12.18.3.2477"
     runDir = "run"
-    
     // the mappings can be changed at any time, and must be in the following format.
     // snapshot_YYYYMMDD   snapshot are built nightly.
     // stable_#            stables are built at the discretion of the MCP team.
@@ -41,15 +43,6 @@ minecraft {
     mappings = "snapshot_20161111"
     // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
 }
-
-/*
-runClient.doFirst {
-    copy {
-        from shadowJar.archivePath
-        into file("${minecraft.runDir}/mods")
-    }
-}
-*/
 
 dependencies {
     // you may put jars on which you depend on in ./libs
@@ -115,6 +108,15 @@ reobf {
 
 build.dependsOn reobfShadowJar
 
+sourceSets {
+    main {
+        java {
+            // TODO: Try to figure out how to do this better
+            srcDirs = ['common/src/main/java', 'common/src/template/java','common-client/src/main/java', 'forge/src/main/java', 'api/src/main/java']
+        }
+    }
+}
+
 mixin {
    add sourceSets.main, "voicechat.refmap.json"
 }
@@ -124,6 +126,7 @@ processResources
     // this will ensure that this task is redone when the versions change.
     inputs.property "version", project.version
     inputs.property "mcversion", project.minecraft.version
+    inputs.property "mod_compatible_version", mod_compatible_version
 
     // replace stuff in mcmod.info, nothing else
     from(sourceSets.main.resources.srcDirs) {

@@ -42,7 +42,7 @@ public class ServerVoiceEvents {
             clientCompatibilities.put(player.getUniqueID(), packet.getCompatibilityVersion());
             if (packet.getCompatibilityVersion() != Voicechat.COMPATIBILITY_VERSION) {
                 Voicechat.LOGGER.warn("Connected client {} has incompatible voice chat version (server={}, client={})", player.getDisplayNameString(), Voicechat.COMPATIBILITY_VERSION, packet.getCompatibilityVersion());
-                player.sendMessage(getIncompatibleMessage(packet.getCompatibilityVersion()));
+                player.addChatMessage(getIncompatibleMessage(packet.getCompatibilityVersion()));
             } else {
                 initializePlayerConnection(player);
             }
@@ -130,7 +130,7 @@ public class ServerVoiceEvents {
                 }
                 if (!isCompatible(serverPlayer)) {
                     CommonCompatibilityManager.INSTANCE.execute(serverPlayer.mcServer, () -> {
-                        serverPlayer.connection.disconnect(
+                        serverPlayer.connection.onDisconnect(
                                 new TextComponentString(String.format(
                                         Voicechat.TRANSLATIONS.forceVoicechatKickMessage.get(),
                                         CommonCompatibilityManager.INSTANCE.getModName(),

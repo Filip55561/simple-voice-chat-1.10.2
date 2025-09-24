@@ -43,11 +43,11 @@ public class CreateGroupScreen extends VoiceChatScreenBase {
 
         Keyboard.enableRepeatEvents(true);
 
-        groupName = new GuiTextField(0, fontRenderer, guiLeft + 7, guiTop + 31, xSize - 7 * 2, 12);
+        groupName = new GuiTextField(0, fontRendererObj, guiLeft + 7, guiTop + 31, xSize - 7 * 2, 12);
         groupName.setMaxStringLength(24);
         groupName.setValidator(s -> s.isEmpty() || Voicechat.GROUP_REGEX.matcher(s).matches());
 
-        password = new GuiTextField(1, fontRenderer, guiLeft + 7, guiTop + 57, xSize - 7 * 2, 12);
+        password = new GuiTextField(1, fontRendererObj, guiLeft + 7, guiTop + 57, xSize - 7 * 2, 12);
         password.setMaxStringLength(32);
         password.setValidator(s -> s.isEmpty() || Voicechat.GROUP_REGEX.matcher(s).matches());
 
@@ -105,12 +105,12 @@ public class CreateGroupScreen extends VoiceChatScreenBase {
         }
         groupName.drawTextBox();
         password.drawTextBox();
-        fontRenderer.drawString(CREATE_GROUP.getUnformattedComponentText(), guiLeft + xSize / 2 - fontRenderer.getStringWidth(CREATE_GROUP.getUnformattedComponentText()) / 2, guiTop + 7, FONT_COLOR);
-        fontRenderer.drawString(GROUP_NAME.getUnformattedComponentText(), guiLeft + 8, guiTop + 7 + fontRenderer.FONT_HEIGHT + 5, FONT_COLOR);
-        fontRenderer.drawString(OPTIONAL_PASSWORD.getUnformattedComponentText(), guiLeft + 8, guiTop + 7 + (fontRenderer.FONT_HEIGHT + 5) * 2 + 10 + 2, FONT_COLOR);
+        fontRendererObj.drawString(CREATE_GROUP.getUnformattedComponentText(), guiLeft + xSize / 2 - fontRendererObj.getStringWidth(CREATE_GROUP.getUnformattedComponentText()) / 2, guiTop + 7, FONT_COLOR);
+        fontRendererObj.drawString(GROUP_NAME.getUnformattedComponentText(), guiLeft + 8, guiTop + 7 + fontRendererObj.FONT_HEIGHT + 5, FONT_COLOR);
+        fontRendererObj.drawString(OPTIONAL_PASSWORD.getUnformattedComponentText(), guiLeft + 8, guiTop + 7 + (fontRendererObj.FONT_HEIGHT + 5) * 2 + 10 + 2, FONT_COLOR);
 
-        if (mouseX >= groupTypeButton.x && mouseY >= groupTypeButton.y && mouseX < groupTypeButton.x + groupTypeButton.width && mouseY < groupTypeButton.y + groupTypeButton.height) {
-            drawHoveringText(mc.fontRenderer.listFormattedStringToWidth(groupType.getDescription().getUnformattedComponentText(), 200), mouseX, mouseY);
+        if (mouseX >= groupTypeButton.xPosition && mouseY >= groupTypeButton.yPosition && mouseX < groupTypeButton.xPosition + groupTypeButton.width && mouseY < groupTypeButton.yPosition + groupTypeButton.height) {
+            drawHoveringText(mc.fontRendererObj.listFormattedStringToWidth(groupType.getDescription().getUnformattedComponentText(), 200), mouseX, mouseY);
         }
     }
 

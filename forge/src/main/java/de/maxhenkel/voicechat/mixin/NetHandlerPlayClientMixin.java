@@ -16,19 +16,19 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class NetHandlerPlayClientMixin {
 
     @Inject(method = "handleCustomPayload", at = @At("HEAD"), cancellable = true)
-    private void handleCustomPayload(SPacketCustomPayload packet, CallbackInfo ci) {
+    public void handleCustomPayload(SPacketCustomPayload packet, CallbackInfo ci) {
         if (ForgeNetworkEvents.onCustomPayloadClient(packet)) {
             ci.cancel();
         }
     }
 
     @Inject(method = "handleJoinGame", at = @At("TAIL"))
-    private void handleJoinGame(SPacketJoinGame packetIn, CallbackInfo ci) {
+    public void handleJoinGame(SPacketJoinGame packetIn, CallbackInfo ci) {
         ((ForgeClientCompatibilityManager) ClientCompatibilityManager.INSTANCE).onJoinWorld();
     }
 
     @Inject(method = "handleRespawn", at = @At("TAIL"))
-    private void handleRespawn(SPacketRespawn packetIn, CallbackInfo ci) {
+    public void handleRespawn(SPacketRespawn packetIn, CallbackInfo ci) {
         ((ForgeClientCompatibilityManager) ClientCompatibilityManager.INSTANCE).onRespawn();
     }
 

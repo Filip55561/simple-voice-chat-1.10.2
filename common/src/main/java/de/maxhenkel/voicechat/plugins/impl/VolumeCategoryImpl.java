@@ -100,8 +100,8 @@ public class VolumeCategoryImpl implements VolumeCategory {
     }
 
     public static VolumeCategoryImpl fromBytes(PacketBuffer buf) {
-        String id = buf.readString(16);
-        String name = buf.readString(16);
+        String id = buf.readStringFromBuffer(16);
+        String name = buf.readStringFromBuffer(16);
         String nameTranslationKey = readOptionalString(buf);
         String description = readOptionalString(buf);
         String descriptionTranslationKey = readOptionalString(buf);
@@ -120,7 +120,7 @@ public class VolumeCategoryImpl implements VolumeCategory {
     @Nullable
     private static String readOptionalString(PacketBuffer buf) {
         if (buf.readBoolean()) {
-            return buf.readString(32767);
+            return buf.readStringFromBuffer(32767);
         }
         return null;
     }

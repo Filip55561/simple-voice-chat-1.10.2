@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiListExtended;
+import net.minecraftforge.fml.client.FMLClientHandler;
 
 import java.util.List;
 
@@ -22,13 +23,15 @@ public abstract class ListScreenEntryBase implements GuiListExtended.IGuiListEnt
         return children;
     }
 
+    /*
     @Override
     public void updatePosition(int slotIndex, int x, int y, float partialTicks) {
 
     }
+    */
 
     @Override
-    public void drawEntry(int slotIndex, int x, int y, int listWidth, int slotHeight, int mouseX, int mouseY, boolean isSelected, float partialTicks) {
+    public void drawEntry(int slotIndex, int x, int y, int listWidth, int slotHeight, int mouseX, int mouseY, boolean isSelected) {
         selected = isSelected;
     }
 

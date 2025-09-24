@@ -41,7 +41,7 @@ public abstract class SelectDeviceScreen extends IngameListScreenBase {
         super.initGui();
         guiLeft = guiLeft + 2;
         guiTop = 32;
-        int minUnits = MathHelper.ceil((float) (AudioDeviceList.CELL_HEIGHT + 4) / (float) UNIT_SIZE);
+        int minUnits = MathHelper.ceiling_float_int((float) (AudioDeviceList.CELL_HEIGHT + 4) / (float) UNIT_SIZE);
         units = Math.max(minUnits, (height - HEADER_SIZE - FOOTER_SIZE - guiTop * 2) / UNIT_SIZE);
         ySize = HEADER_SIZE + units * UNIT_SIZE + FOOTER_SIZE;
 
@@ -72,9 +72,9 @@ public abstract class SelectDeviceScreen extends IngameListScreenBase {
 
     @Override
     public void renderForeground(int mouseX, int mouseY, float delta) {
-        fontRenderer.drawString(title.getUnformattedComponentText(), width / 2 - fontRenderer.getStringWidth(title.getUnformattedComponentText()) / 2, guiTop + 5, isIngame() ? FONT_COLOR : 0xFFFFFF);
+    	fontRendererObj.drawString(title.getUnformattedComponentText(), width / 2 - fontRendererObj.getStringWidth(title.getUnformattedComponentText()) / 2, guiTop + 5, isIngame() ? FONT_COLOR : 0xFFFFFF);
         if (deviceList == null || deviceList.isEmpty()) {
-            drawCenteredString(fontRenderer, getEmptyListComponent().getUnformattedComponentText(), width / 2, guiTop + HEADER_SIZE + (units * UNIT_SIZE) / 2 - fontRenderer.FONT_HEIGHT / 2, -1);
+            drawCenteredString(fontRendererObj, getEmptyListComponent().getUnformattedComponentText(), width / 2, guiTop + HEADER_SIZE + (units * UNIT_SIZE) / 2 - fontRendererObj.FONT_HEIGHT / 2, -1);
         }
     }
 

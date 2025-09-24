@@ -5,6 +5,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.util.text.*;
 import net.minecraft.util.text.event.HoverEvent;
+import net.minecraftforge.fml.client.FMLClientHandler;
 
 import javax.annotation.Nullable;
 
@@ -46,10 +47,10 @@ public class ChatUtils {
     }
 
     public static void sendPlayerMessage(ITextComponent component) {
-        EntityPlayerSP player = Minecraft.getMinecraft().player;
+        EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
         if (player == null) {
             return;
         }
-        player.sendMessage(component);
+        player.addChatMessage(component);
     }
 }

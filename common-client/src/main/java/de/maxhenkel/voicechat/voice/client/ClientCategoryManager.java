@@ -60,7 +60,7 @@ public class ClientCategoryManager extends CategoryManager {
     }
 
     private void registerImage(String id, BufferedImage image) {
-        ResourceLocation resourceLocation = new ResourceLocation(Voicechat.MODID, "category_" + id);//Minecraft.getMinecraft().getEntityRenderDispatcher().textureManager.register(id, new CustomTextureObject(image));
+        ResourceLocation resourceLocation = new ResourceLocation(Voicechat.MODID, "category_" + id);//Minecraft.getMinecraft()().getEntityRenderDispatcher().textureManager.register(id, new CustomTextureObject(image));
         images.put(id, new CustomTextureObject(resourceLocation, image));
     }
 

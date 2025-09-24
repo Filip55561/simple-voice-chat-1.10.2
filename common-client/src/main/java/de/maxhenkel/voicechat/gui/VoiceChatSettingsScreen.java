@@ -15,6 +15,7 @@ import net.minecraft.util.text.TextComponentTranslation;
 
 import javax.annotation.Nullable;
 import java.io.IOException;
+import java.util.Collections;
 
 public class VoiceChatSettingsScreen extends VoiceChatScreenBase {
 
@@ -125,8 +126,8 @@ public class VoiceChatSettingsScreen extends VoiceChatScreenBase {
 
     @Override
     public void renderForeground(int mouseX, int mouseY, float delta) {
-        int titleWidth = fontRenderer.getStringWidth(TITLE.getUnformattedComponentText());
-        fontRenderer.drawString(TITLE.getFormattedText(), guiLeft + (xSize - titleWidth) / 2, guiTop + 7, getFontColor());
+        int titleWidth = fontRendererObj.getStringWidth(TITLE.getUnformattedComponentText());
+        fontRendererObj.drawString(TITLE.getFormattedText(), guiLeft + (xSize - titleWidth) / 2, guiTop + 7, getFontColor());
 
         if (voiceActivationSlider == null) {
             return;
@@ -134,11 +135,11 @@ public class VoiceChatSettingsScreen extends VoiceChatScreenBase {
 
         ITextComponent sliderTooltip = voiceActivationSlider.getHoverText();
         if (voiceActivationSlider.isHovered() && sliderTooltip != null) {
-            drawHoveringText(sliderTooltip.getFormattedText(), mouseX, mouseY);
+        	drawTooltip(Collections.singletonList(sliderTooltip.getFormattedText()), mouseX, mouseY);
         } else if (micTestButton.isHovered()) {
             micTestButton.onTooltip(micTestButton, mouseX, mouseY);
         } else if (keybindButton.isHovered()) {
-            drawHoveringText(ASSIGN_TOOLTIP.getFormattedText(), mouseX, mouseY);
+        	drawTooltip(Collections.singletonList(ASSIGN_TOOLTIP.getFormattedText()), mouseX, mouseY);
         }
     }
 

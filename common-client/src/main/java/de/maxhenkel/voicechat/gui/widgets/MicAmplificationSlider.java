@@ -1,6 +1,7 @@
 package de.maxhenkel.voicechat.gui.widgets;
 
 import de.maxhenkel.voicechat.VoicechatClient;
+import de.maxhenkel.voicechat.gui.ScreenBase;
 import de.maxhenkel.voicechat.voice.client.VolumeManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
@@ -14,9 +15,9 @@ public class MicAmplificationSlider extends DebouncedSlider {
     public static final int GAIN_WARNING_THRESHOLD = 10;
     private static final ITextComponent GAIN_WARNING = new TextComponentTranslation("message.voicechat.microphone_gain.warning", GAIN_WARNING_THRESHOLD).setStyle(new Style().setColor(TextFormatting.RED));
 
-    private final GuiScreen parent;
+    private final ScreenBase parent;
 
-    public MicAmplificationSlider(int id, GuiScreen parent, int xIn, int yIn, int widthIn, int heightIn) {
+    public MicAmplificationSlider(int id, ScreenBase parent, int xIn, int yIn, int widthIn, int heightIn) {
         super(id, xIn, yIn, widthIn, heightIn, gainToValue(VoicechatClient.CLIENT_CONFIG.microphoneGain.get()));
         this.parent = parent;
         updateMessage();
@@ -40,7 +41,7 @@ public class MicAmplificationSlider extends DebouncedSlider {
         }
         long gain = Math.round(valueToGain(value));
         if (gain > GAIN_WARNING_THRESHOLD && enabled) {
-            parent.drawHoveringText(Minecraft.getMinecraft().fontRenderer.listFormattedStringToWidth(GAIN_WARNING.getFormattedText(), 200), mouseX, mouseY);
+            parent.drawTooltip(Minecraft.getMinecraft().fontRendererObj.listFormattedStringToWidth(GAIN_WARNING.getFormattedText(), 200), mouseX, mouseY);
         }
     }
 

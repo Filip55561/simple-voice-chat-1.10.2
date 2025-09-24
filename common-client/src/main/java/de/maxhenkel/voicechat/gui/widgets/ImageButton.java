@@ -3,6 +3,7 @@ package de.maxhenkel.voicechat.gui.widgets;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraftforge.fml.client.FMLClientHandler;
 
 import javax.annotation.Nullable;
 
@@ -29,15 +30,17 @@ public class ImageButton extends ButtonBase {
         }
     }
 
-    protected void renderImage(int mouseX, int mouseY, float delta) {
+    protected void renderImage(int mouseX, int mouseY) {
         mc.getTextureManager().bindTexture(texture);
-        drawModalRectWithCustomSizedTexture(x + 2, y + 2, 0, 0, 16, 16, 16, 16);
+        drawModalRectWithCustomSizedTexture(xPosition + 2, yPosition + 2, 0, 0, 16, 16, 16, 16);
     }
 
     @Override
-    public void drawButton(Minecraft minecraft, int mouseX, int mouseY, float delta) {
-        super.drawButton(minecraft, mouseX, mouseY, delta);
-        renderImage(mouseX, mouseY, delta);
+    
+    // (wrong) removed delta from every button
+    public void drawButton(Minecraft minecraft, int mouseX, int mouseY) {
+        super.drawButton(minecraft, mouseX, mouseY);
+        renderImage(mouseX, mouseY);
     }
 
     @Override

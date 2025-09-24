@@ -29,7 +29,7 @@ public class SpeexManager extends NativeValidator {
             return null;
         }
         return NativeUtils.createSafe(() -> {
-            Agc agc = new Agc(AudioUtils.FRAME_SIZE, AudioUtils.SAMPLE_RATE);
+        	Agc agc = new Agc(AudioUtils.FRAME_SIZE, AudioUtils.SAMPLE_RATE);
             agc.setTarget(TARGET);
             return agc;
         }, e -> {

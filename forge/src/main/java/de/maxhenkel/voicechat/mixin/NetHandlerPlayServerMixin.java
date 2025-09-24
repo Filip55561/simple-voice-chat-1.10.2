@@ -10,15 +10,15 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(NetHandlerPlayServer.class)
+@Mixin(value = NetHandlerPlayServer.class, remap = true)
 public class NetHandlerPlayServerMixin {
 
-    @Shadow
-    public EntityPlayerMP player;
+	@Shadow
+    public EntityPlayerMP playerEntity;
 
     @Inject(method = "processCustomPayload", at = @At("HEAD"), cancellable = true)
     private void processCustomPayload(CPacketCustomPayload packet, CallbackInfo ci) {
-        if (ForgeNetworkEvents.onCustomPayloadServer(packet, player)) {
+        if (ForgeNetworkEvents.onCustomPayloadServer(packet, playerEntity)) {
             ci.cancel();
         }
     }

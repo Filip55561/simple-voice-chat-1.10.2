@@ -117,9 +117,6 @@ run/
 # Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
 !gradle-wrapper.jar
 
-curseforge_api_key.txt
-mod_update_api_key.txt
-modrinth_token.txt
-hangar_api_key.txt
-
 /forge/src/main/resources/natives/
+
+assets/

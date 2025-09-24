@@ -37,6 +37,7 @@ public abstract class NetManager {
         removePlayerStateChannel = registerReceiver(RemovePlayerStatePacket.class, true, false);
         secretChannel = registerReceiver(SecretPacket.class, true, false);
         requestSecretChannel = registerReceiver(RequestSecretPacket.class, false, true);
+        Voicechat.LOGGER.info("requestSecretChannel initialized: {}", requestSecretChannel != null);
         addGroupChannel = registerReceiver(AddGroupPacket.class, true, false);
         removeGroupChannel = registerReceiver(RemoveGroupPacket.class, true, false);
         joinGroupChannel = registerReceiver(JoinGroupPacket.class, false, true);
@@ -55,6 +56,7 @@ public abstract class NetManager {
         }
         PacketBuffer buffer = new PacketBuffer(Unpooled.buffer());
         packet.toBytes(buffer);
+
         player.connection.sendPacket(new SPacketCustomPayload(packet.getIdentifier().toString(), buffer));
     }
 

@@ -1,5 +1,7 @@
 package de.maxhenkel.voicechat.gui.group;
 
+import java.util.Collections;
+
 import de.maxhenkel.voicechat.Voicechat;
 import de.maxhenkel.voicechat.VoicechatClient;
 import de.maxhenkel.voicechat.api.Group;
@@ -56,7 +58,7 @@ public class GroupScreen extends IngameListScreenBase {
         super.initGui();
         guiLeft = guiLeft + 2;
         guiTop = 32;
-        int minUnits = MathHelper.ceil((float) (CELL_HEIGHT + 4) / (float) UNIT_SIZE);
+        int minUnits = MathHelper.ceiling_float_int((float) (CELL_HEIGHT + 4) / (float) UNIT_SIZE);
         units = Math.max(minUnits, (height - HEADER_SIZE - FOOTER_SIZE - guiTop * 2) / UNIT_SIZE);
         ySize = HEADER_SIZE + units * UNIT_SIZE + FOOTER_SIZE;
 
@@ -87,7 +89,7 @@ public class GroupScreen extends IngameListScreenBase {
             ClientServerNetManager.sendToServer(new LeaveGroupPacket());
             mc.displayGuiScreen(new JoinGroupScreen());
         }, (button, mouseX, mouseY) -> {
-            drawHoveringText(LEAVE_GROUP.getUnformattedComponentText(), mouseX, mouseY);
+            drawTooltip(Collections.singletonList(LEAVE_GROUP.getUnformattedComponentText()), mouseX, mouseY);
         });
         addButton(leave);
 
@@ -129,7 +131,7 @@ public class GroupScreen extends IngameListScreenBase {
             title = new TextComponentTranslation("message.voicechat.group_type_title", new TextComponentString(group.getName()), GroupType.fromType(group.getType()).getTranslation());
         }
 
-        fontRenderer.drawString(title.getFormattedText(), guiLeft + xSize / 2 - fontRenderer.getStringWidth(title.getUnformattedComponentText()) / 2, guiTop + 5, FONT_COLOR);
+        fontRendererObj.drawString(title.getFormattedText(), guiLeft + xSize / 2 - fontRendererObj.getStringWidth(title.getUnformattedComponentText()) / 2, guiTop + 5, FONT_COLOR);
     }
 
 }

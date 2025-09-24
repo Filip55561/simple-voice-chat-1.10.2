@@ -4,6 +4,7 @@ import de.maxhenkel.voicechat.VoicechatClient;
 import de.maxhenkel.voicechat.voice.client.PositionalAudioUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.math.Vec3d;
+import net.minecraftforge.fml.client.FMLClientHandler;
 
 public class FreecamUtil {
 
@@ -13,10 +14,10 @@ public class FreecamUtil {
      * @return whether freecam is currently in use
      */
     public static boolean isFreecamEnabled() {
-        if (mc.player == null) {
+        if (mc.thePlayer == null) {
             return false;
         }
-        return VoicechatClient.CLIENT_CONFIG.freecamMode.get().equals(FreecamMode.PLAYER) && !(mc.player.isSpectator() || mc.player.equals(mc.getRenderViewEntity()));
+        return VoicechatClient.CLIENT_CONFIG.freecamMode.get().equals(FreecamMode.PLAYER) && !(mc.thePlayer.isSpectator() || mc.thePlayer.equals(mc.getRenderViewEntity()));
     }
 
     /**
@@ -25,10 +26,10 @@ public class FreecamUtil {
      * @return the position distances should be measured from
      */
     public static Vec3d getReferencePoint() {
-        if (mc.player == null) {
+        if (mc.thePlayer == null) {
             return Vec3d.ZERO;
         }
-        return isFreecamEnabled() ? mc.player.getPositionEyes(1F) : PositionalAudioUtils.getCameraPosition();
+        return isFreecamEnabled() ? mc.thePlayer.getPositionEyes(1F) : PositionalAudioUtils.getCameraPosition();
     }
 
     /**

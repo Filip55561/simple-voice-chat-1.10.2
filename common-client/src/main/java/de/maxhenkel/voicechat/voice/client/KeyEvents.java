@@ -15,6 +15,8 @@ import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraftforge.fml.client.FMLClientHandler;
+
 import org.lwjgl.input.Keyboard;
 
 public class KeyEvents {
@@ -55,7 +57,7 @@ public class KeyEvents {
     }
 
     private void handleKeybinds() {
-        EntityPlayerSP player = minecraft.player;
+        EntityPlayerSP player = minecraft.thePlayer;
         if (player == null) {
             return;
         }
@@ -75,7 +77,7 @@ public class KeyEvents {
             if (GuiScreen.isAltKeyDown()) {
                 if (GuiScreen.isCtrlKeyDown()) {
                     VoicechatClient.CLIENT_CONFIG.onboardingFinished.set(false).save();
-                    player.sendStatusMessage(new TextComponentTranslation("message.voicechat.onboarding.reset"), true);
+                    player.addChatMessage(new TextComponentTranslation("message.voicechat.onboarding.reset"));
                 } else {
                     ClientManager.getDebugOverlay().toggle();
                 }
@@ -93,7 +95,7 @@ public class KeyEvents {
                     minecraft.displayGuiScreen(new JoinGroupScreen());
                 }
             } else {
-                player.sendStatusMessage(new TextComponentTranslation("message.voicechat.groups_disabled"), true);
+                player.addChatMessage(new TextComponentTranslation("message.voicechat.groups_disabled"));
             }
         }
 
@@ -130,9 +132,9 @@ public class KeyEvents {
             VoicechatClient.CLIENT_CONFIG.hideIcons.set(hidden).save();
 
             if (hidden) {
-                player.sendStatusMessage(new TextComponentTranslation("message.voicechat.icons_hidden"), true);
+                player.addChatMessage(new TextComponentTranslation("message.voicechat.icons_hidden"));
             } else {
-                player.sendStatusMessage(new TextComponentTranslation("message.voicechat.icons_visible"), true);
+                player.addChatMessage(new TextComponentTranslation("message.voicechat.icons_visible"));
             }
         }
     }
@@ -146,12 +148,12 @@ public class KeyEvents {
     }
 
     private void sendNotConnectedMessage() {
-        EntityPlayerSP player = minecraft.player;
+        EntityPlayerSP player = minecraft.thePlayer;
         if (player == null) {
             Voicechat.LOGGER.warn("Voice chat not connected");
             return;
         }
-        player.sendStatusMessage(new TextComponentTranslation("message.voicechat.voice_chat_not_connected"), true);
+        player.addChatMessage(new TextComponentTranslation("message.voicechat.voice_chat_not_connected"));
     }
 
 }

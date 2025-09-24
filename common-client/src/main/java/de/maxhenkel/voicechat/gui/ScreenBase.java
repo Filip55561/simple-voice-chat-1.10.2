@@ -34,6 +34,10 @@ public abstract class ScreenBase extends GuiScreen {
             }
         }
     }
+    
+    public void drawTooltip(java.util.List<String> lines, int x, int y) {
+        drawHoveringText(lines, x, y);
+    }
 
     public void renderBackground(int mouseX, int mouseY, float delta) {
 
@@ -61,7 +65,7 @@ public abstract class ScreenBase extends GuiScreen {
     }
 
     protected boolean isIngame() {
-        return mc.world != null;
+        return mc.theWorld != null;
     }
 
     public static int color(int alpha, int red, int green, int blue) {

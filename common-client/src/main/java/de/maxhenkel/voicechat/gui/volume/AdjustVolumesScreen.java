@@ -51,7 +51,7 @@ public class AdjustVolumesScreen extends IngameListScreenBase {
         super.initGui();
         guiLeft = guiLeft + 2;
         guiTop = 32;
-        int minUnits = MathHelper.ceil((float) (CELL_HEIGHT + SEARCH_HEIGHT + 4) / (float) UNIT_SIZE);
+        int minUnits = MathHelper.ceiling_float_int((float) (CELL_HEIGHT + SEARCH_HEIGHT + 4) / (float) UNIT_SIZE);
         units = Math.max(minUnits, (height - HEADER_SIZE - FOOTER_SIZE - guiTop * 2 - SEARCH_HEIGHT) / UNIT_SIZE);
         ySize = HEADER_SIZE + units * UNIT_SIZE + FOOTER_SIZE;
 
@@ -60,7 +60,7 @@ public class AdjustVolumesScreen extends IngameListScreenBase {
         volumeList = new AdjustVolumeList(width, units * UNIT_SIZE - SEARCH_HEIGHT, guiTop + HEADER_SIZE + SEARCH_HEIGHT, CELL_HEIGHT, this);
 
         String string = searchBox != null ? searchBox.getText() : "";
-        searchBox = new GuiTextField(0, fontRenderer, guiLeft + 28, guiTop + HEADER_SIZE + 6, 196, SEARCH_HEIGHT);
+        searchBox = new GuiTextField(0, fontRendererObj, guiLeft + 28, guiTop + HEADER_SIZE + 6, 196, SEARCH_HEIGHT);
         searchBox.setMaxStringLength(16);
         searchBox.setEnableBackgroundDrawing(false);
         searchBox.setVisible(true);
@@ -102,7 +102,7 @@ public class AdjustVolumesScreen extends IngameListScreenBase {
 
     @Override
     public void renderForeground(int mouseX, int mouseY, float delta) {
-        fontRenderer.drawString(TITLE.getFormattedText(), width / 2 - fontRenderer.getStringWidth(TITLE.getUnformattedComponentText()) / 2, guiTop + 5, VoiceChatScreenBase.FONT_COLOR);
+        fontRendererObj.drawString(TITLE.getFormattedText(), width / 2 - fontRendererObj.getStringWidth(TITLE.getUnformattedComponentText()) / 2, guiTop + 5, VoiceChatScreenBase.FONT_COLOR);
 
         if (volumeList == null) {
             return;
@@ -111,10 +111,10 @@ public class AdjustVolumesScreen extends IngameListScreenBase {
         if (!volumeList.isEmpty()) {
             volumeList.drawScreen(mouseX, mouseY, delta);
         } else if (!searchBox.getText().isEmpty()) {
-            drawCenteredString(fontRenderer, EMPTY_SEARCH.getFormattedText(), width / 2, guiTop + HEADER_SIZE + (units * UNIT_SIZE) / 2 - fontRenderer.FONT_HEIGHT / 2, -1);
+            drawCenteredString(fontRendererObj, EMPTY_SEARCH.getFormattedText(), width / 2, guiTop + HEADER_SIZE + (units * UNIT_SIZE) / 2 - fontRendererObj.FONT_HEIGHT / 2, -1);
         }
         if (!searchBox.isFocused() && searchBox.getText().isEmpty()) {
-            drawString(fontRenderer, SEARCH_HINT.getFormattedText(), searchBox.x, searchBox.y, -1);
+            drawString(fontRendererObj, SEARCH_HINT.getFormattedText(), searchBox.xPosition, searchBox.yPosition, -1);
         } else {
             GlStateManager.disableLighting();
             GlStateManager.disableBlend();

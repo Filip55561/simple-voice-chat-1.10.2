@@ -8,6 +8,7 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraftforge.fml.client.FMLClientHandler;
 
 import javax.annotation.Nullable;
 import java.util.function.Supplier;
@@ -34,12 +35,12 @@ public class AudioDeviceEntry extends ListScreenEntryBase {
         this.icon = icon;
         this.isSelected = isSelected;
         this.name = name;
-        this.minecraft = Minecraft.getMinecraft();
+        this.minecraft = Minecraft.getMinecraft();;
     }
 
     @Override
-    public void drawEntry(int slotIndex, int x, int y, int listWidth, int slotHeight, int mouseX, int mouseY, boolean hovered, float partialTicks) {
-        super.drawEntry(slotIndex, x, y, listWidth, slotHeight, mouseX, mouseY, hovered, partialTicks);
+    public void drawEntry(int slotIndex, int x, int y, int listWidth, int slotHeight, int mouseX, int mouseY, boolean hovered) {
+        super.drawEntry(slotIndex, x, y, listWidth, slotHeight, mouseX, mouseY, hovered);
         boolean selected = isSelected.get();
         if (selected) {
             GuiScreen.drawRect(x, y, x + listWidth, y + slotHeight, BG_FILL_SELECTED);
@@ -59,19 +60,24 @@ public class AudioDeviceEntry extends ListScreenEntryBase {
             GuiScreen.drawModalRectWithCustomSizedTexture(x + PADDING, y + slotHeight / 2 - 8, 16, 16, 16, 16, 16, 16);
         }
 
-        float deviceWidth = minecraft.fontRenderer.getStringWidth(name.getFormattedText());
+        float deviceWidth = minecraft.fontRendererObj.getStringWidth(name.getFormattedText());
         float space = listWidth - PADDING - 16 - PADDING - PADDING;
         float scale = Math.min(space / deviceWidth, 1F);
 
         GlStateManager.pushMatrix();
-        GlStateManager.translate(x + PADDING + 16 + PADDING, y + slotHeight / 2 - (minecraft.fontRenderer.FONT_HEIGHT * scale) / 2, 0D);
+        GlStateManager.translate(x + PADDING + 16 + PADDING, y + slotHeight / 2 - (minecraft.fontRendererObj.FONT_HEIGHT * scale) / 2, 0D);
         GlStateManager.scale(scale, scale, 1F);
 
-        minecraft.fontRenderer.drawString(name.getFormattedText(), 0, 0, DEVICE_NAME_COLOR);
+        minecraft.fontRendererObj.drawString(name.getFormattedText(), 0, 0, DEVICE_NAME_COLOR);
         GlStateManager.popMatrix();
     }
 
     public String getDevice() {
         return device;
     }
+
+	@Override
+	public void setSelected(int p_178011_1_, int p_178011_2_, int p_178011_3_) {
+		
+	}
 }

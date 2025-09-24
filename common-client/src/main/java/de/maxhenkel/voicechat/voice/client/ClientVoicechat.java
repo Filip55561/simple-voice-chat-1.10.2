@@ -12,6 +12,7 @@ import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.fml.client.FMLClientHandler;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
@@ -160,17 +161,17 @@ public class ClientVoicechat {
         if (recording == (recorder != null)) {
             return false;
         }
-        EntityPlayerSP player = Minecraft.getMinecraft().player;
+        EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
         if (recording) {
             if (connection == null || !connection.getData().allowRecording()) {
                 if (player != null) {
-                    player.sendStatusMessage(new TextComponentTranslation("message.voicechat.recording_disabled"), true);
+                    player.addChatMessage(new TextComponentTranslation("message.voicechat.recording_disabled"));
                 }
                 return false;
             }
             recorder = AudioRecorder.create();
             if (player != null) {
-                player.sendStatusMessage(new TextComponentTranslation("message.voicechat.recording_started").setStyle(new Style().setColor(TextFormatting.DARK_RED)), true);
+                player.addChatMessage(new TextComponentTranslation("message.voicechat.recording_started").setStyle(new Style().setColor(TextFormatting.DARK_RED)));
             }
             return true;
         }
@@ -178,7 +179,7 @@ public class ClientVoicechat {
         AudioRecorder rec = recorder;
         recorder = null;
         if (player != null) {
-            player.sendStatusMessage(new TextComponentTranslation("message.voicechat.recording_stopped").setStyle(new Style().setColor(TextFormatting.DARK_RED)), true);
+            player.addChatMessage(new TextComponentTranslation("message.voicechat.recording_stopped").setStyle(new Style().setColor(TextFormatting.DARK_RED)));
         }
         rec.saveAndClose();
         return true;

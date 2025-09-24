@@ -6,11 +6,12 @@ import net.minecraft.client.network.NetworkPlayerInfo;
 import net.minecraft.client.resources.DefaultPlayerSkin;
 import net.minecraft.util.ResourceLocation;
 
+import net.minecraftforge.fml.client.FMLClientHandler;
 import java.util.UUID;
 
 public class GameProfileUtils {
 
-    private static final Minecraft mc = Minecraft.getMinecraft();
+    private static final Minecraft mc = Minecraft.getMinecraft();;
 
     public static ResourceLocation getSkin(UUID uuid) {
         NetHandlerPlayClient connection = mc.getConnection();

@@ -30,13 +30,13 @@ public class RemovePlayerStatePacket implements Packet<RemovePlayerStatePacket> 
 
     @Override
     public RemovePlayerStatePacket fromBytes(PacketBuffer buf) {
-        id = buf.readUniqueId();
+        id = buf.readUuid();
         return this;
     }
 
     @Override
     public void toBytes(PacketBuffer buf) {
-        buf.writeUniqueId(id);
+        buf.writeUuid(id);
     }
 
 }

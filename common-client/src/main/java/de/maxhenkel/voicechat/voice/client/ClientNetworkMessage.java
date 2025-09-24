@@ -33,7 +33,7 @@ public class ClientNetworkMessage {
         byte[] payload = networkMessage.write(client.getData().getSecret());
         PacketBuffer buffer = new PacketBuffer(Unpooled.buffer(1 + 16 + payload.length));
         buffer.writeByte(NetworkMessage.MAGIC_BYTE);
-        buffer.writeUniqueId(client.getData().getPlayerUUID());
+        buffer.writeUuid(client.getData().getPlayerUUID());
         buffer.writeByteArray(payload);
 
         byte[] bytes = new byte[buffer.readableBytes()];

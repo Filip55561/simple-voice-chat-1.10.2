@@ -7,6 +7,8 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentTranslation;
 
+import java.util.Collections;
+
 import javax.annotation.Nullable;
 
 public class VoiceActivationOnboardingScreen extends OnboardingScreenBase {
@@ -60,7 +62,7 @@ public class VoiceActivationOnboardingScreen extends OnboardingScreenBase {
 
         ITextComponent sliderTooltip = slider.getHoverText();
         if (slider.isHovered() && sliderTooltip != null) {
-            drawHoveringText(sliderTooltip.getFormattedText(), mouseX, mouseY);
+            drawTooltip(Collections.singletonList(sliderTooltip.getFormattedText()), mouseX, mouseY);
         } else if (micTestButton.isHovered()) {
             micTestButton.onTooltip(micTestButton, mouseX, mouseY);
         }

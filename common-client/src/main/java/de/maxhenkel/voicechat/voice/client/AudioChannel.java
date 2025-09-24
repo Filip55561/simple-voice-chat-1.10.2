@@ -108,7 +108,7 @@ public class AudioChannel extends Thread {
                     continue;
                 }
 
-                if (minecraft.world == null || minecraft.player == null) {
+                if (minecraft.theWorld == null || minecraft.thePlayer == null) {
                     continue;
                 }
 
@@ -202,18 +202,18 @@ public class AudioChannel extends Thread {
             appendRecording(() -> PositionalAudioUtils.convertToStereo(processedMonoData));
         } else if (packet instanceof PlayerSoundPacket) {
             PlayerSoundPacket soundPacket = (PlayerSoundPacket) packet;
-            @Nullable Entity entity = minecraft.world.getPlayerEntityByUUID(soundPacket.getSender());
+            @Nullable Entity entity = minecraft.theWorld.getPlayerEntityByUUID(soundPacket.getSender());
             if (entity == null) {
                 Vec3d position = PositionalAudioUtils.getCameraPosition();
                 AxisAlignedBB box = new AxisAlignedBB(
-                        position.x - soundPacket.getDistance() - 1F,
-                        position.y - soundPacket.getDistance() - 1F,
-                        position.z - soundPacket.getDistance() - 1F,
-                        position.x + soundPacket.getDistance() + 1F,
-                        position.y + soundPacket.getDistance() + 1F,
-                        position.z + soundPacket.getDistance() + 1F
+                        position.xCoord - soundPacket.getDistance() - 1F,
+                        position.yCoord - soundPacket.getDistance() - 1F,
+                        position.zCoord - soundPacket.getDistance() - 1F,
+                        position.xCoord + soundPacket.getDistance() + 1F,
+                        position.yCoord + soundPacket.getDistance() + 1F,
+                        position.zCoord + soundPacket.getDistance() + 1F
                 );
-                entity = minecraft.world.getEntitiesInAABBexcluding(null, box, e -> e.getUniqueID().equals(soundPacket.getSender())).stream().findAny().orElse(null);
+                entity = minecraft.theWorld.getEntitiesInAABBexcluding(null, box, e -> e.getUniqueID().equals(soundPacket.getSender())).stream().findAny().orElse(null);
                 if (entity == null) {
                     return;
                 }

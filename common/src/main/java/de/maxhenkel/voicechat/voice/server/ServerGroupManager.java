@@ -33,7 +33,7 @@ public class ServerGroupManager {
                 return;
             }
             if (!PermissionManager.INSTANCE.GROUPS_PERMISSION.hasPermission(player)) {
-                player.sendStatusMessage(new TextComponentTranslation("message.voicechat.no_group_permission"), true);
+                player.addChatMessage(new TextComponentTranslation("message.voicechat.no_group_permission"));
                 return;
             }
             joinGroup(groups.get(packet.getGroup()), player, packet.getPassword());
@@ -43,7 +43,7 @@ public class ServerGroupManager {
                 return;
             }
             if (!PermissionManager.INSTANCE.GROUPS_PERMISSION.hasPermission(player)) {
-                player.sendStatusMessage(new TextComponentTranslation("message.voicechat.no_group_permission"), true);
+                player.addChatMessage(new TextComponentTranslation("message.voicechat.no_group_permission"));
                 return;
             }
             if (!Voicechat.GROUP_REGEX.matcher(packet.getName()).matches()) {
@@ -159,12 +159,13 @@ public class ServerGroupManager {
 
     private void broadcastAddGroup(Group group) {
         AddGroupPacket packet = new AddGroupPacket(group.toClientGroup());
-        server.getServer().getPlayerList().getPlayers().forEach(p -> NetManager.sendToClient(p, packet));
+        // THIS MIGHT BE WRONG
+        server.getServer().getPlayerList().getPlayerList().forEach(p -> NetManager.sendToClient(p, packet));
     }
 
     private void broadcastRemoveGroup(UUID group) {
         RemoveGroupPacket packet = new RemoveGroupPacket(group);
-        server.getServer().getPlayerList().getPlayers().forEach(p -> NetManager.sendToClient(p, packet));
+        server.getServer().getPlayerList().getPlayerList().forEach(p -> NetManager.sendToClient(p, packet));
     }
 
     @Nullable

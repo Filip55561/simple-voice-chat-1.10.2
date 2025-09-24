@@ -29,6 +29,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.fml.client.FMLClientHandler;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -87,7 +88,7 @@ public class ClientPlayerStateManager {
                 if (screen instanceof JoinGroupScreen || screen instanceof CreateGroupScreen || screen instanceof EnterPasswordScreen) {
                     Minecraft.getMinecraft().displayGuiScreen(null);
                 }
-                client.player.sendStatusMessage(new TextComponentTranslation("message.voicechat.wrong_password").setStyle(new Style().setColor(TextFormatting.DARK_RED)), true);
+                client.thePlayer.addChatMessage(new TextComponentTranslation("message.voicechat.wrong_password").setStyle(new Style().setColor(TextFormatting.DARK_RED)));
             } else if (group != null && screen instanceof JoinGroupScreen || screen instanceof CreateGroupScreen || screen instanceof EnterPasswordScreen) {
                 ClientGroup clientGroup = getGroup();
                 if (clientGroup != null) {
@@ -159,7 +160,6 @@ public class ClientPlayerStateManager {
 
     public void syncOwnState() {
         ClientServerNetManager.sendToServer(new UpdateStatePacket(isDisabled()));
-        Voicechat.LOGGER.debug("Sent own state to server: disabled={}", isDisabled());
     }
 
     public boolean isDisabled() {

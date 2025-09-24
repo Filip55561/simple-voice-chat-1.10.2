@@ -95,7 +95,7 @@ public class SoundManager {
         }
         int error = ALC10.alcGetError(device);
         if (error != ALC10.ALC_NO_ERROR) {
-            if (!ALC10.alcCloseDevice(l)) {
+        	if (!ALC10.alcCloseDevice(l)) {
                 Voicechat.LOGGER.warn("Failed to close audio device");
             }
             throw new SpeakerException(String.format("Failed to open audio device: %s", getAlcError(error)));

@@ -41,7 +41,7 @@ public class VoiceActivationSlider extends DebouncedSlider implements MicTestBut
         mc.getTextureManager().bindTexture(SLIDER);
         GlStateManager.color(1F, 1F, 1F, 1F);
         int width = (int) ((getButtonWidth() - 2) * micValue.smoothMax());
-        drawTexturedModalRect(x + 1, y + 1, 0, 0, width, 18);
+        drawTexturedModalRect(xPosition + 1, yPosition + 1, 0, 0, width, 18);
     }
 
     @Override

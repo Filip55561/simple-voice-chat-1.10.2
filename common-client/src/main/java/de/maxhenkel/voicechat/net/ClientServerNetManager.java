@@ -5,6 +5,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.client.CPacketCustomPayload;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import de.maxhenkel.voicechat.Voicechat;
 
 public abstract class ClientServerNetManager extends NetManager {
 

@@ -3,19 +3,21 @@ package de.maxhenkel.voicechat.gui.widgets;
 import de.maxhenkel.voicechat.Voicechat;
 import de.maxhenkel.voicechat.VoicechatClient;
 import de.maxhenkel.voicechat.debug.VoicechatUncaughtExceptionHandler;
+import de.maxhenkel.voicechat.gui.ScreenBase;
 import de.maxhenkel.voicechat.voice.client.*;
 import de.maxhenkel.voicechat.voice.client.speaker.Speaker;
 import de.maxhenkel.voicechat.voice.client.speaker.SpeakerException;
 import de.maxhenkel.voicechat.voice.client.speaker.SpeakerManager;
 import de.maxhenkel.voicechat.voice.common.AudioUtils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
+
+import java.util.Collections;
 
 import javax.annotation.Nullable;
 
@@ -51,8 +53,8 @@ public class MicTestButton extends ToggleImageButton implements ImageButton.Tool
     }
 
     @Override
-    public void drawButton(Minecraft mc, int mouseX, int mouseY, float partialTicks) {
-        super.drawButton(mc, mouseX, mouseY, partialTicks);
+    public void drawButton(Minecraft mc, int mouseX, int mouseY) {
+        super.drawButton(mc, mouseX, mouseY);
         updateLastRender();
     }
 
@@ -106,18 +108,18 @@ public class MicTestButton extends ToggleImageButton implements ImageButton.Tool
 
     @Override
     public void onTooltip(ImageButton button, int mouseX, int mouseY) {
-        GuiScreen screen = mc.currentScreen;
+    	ScreenBase screen = (ScreenBase) mc.currentScreen;
         if (screen == null) {
             return;
         }
         if (!enabled) {
-            screen.drawHoveringText(TEST_UNAVAILABLE.getFormattedText(), mouseX, mouseY);
+            screen.drawTooltip(Collections.singletonList(TEST_UNAVAILABLE.getFormattedText()), mouseX, mouseY);
             return;
         }
         if (micActive) {
-            screen.drawHoveringText(TEST_ENABLED.getFormattedText(), mouseX, mouseY);
+            screen.drawTooltip(Collections.singletonList(TEST_ENABLED.getFormattedText()), mouseX, mouseY);
         } else {
-            screen.drawHoveringText(TEST_DISABLED.getFormattedText(), mouseX, mouseY);
+            screen.drawTooltip(Collections.singletonList(TEST_DISABLED.getFormattedText()), mouseX, mouseY);
         }
         GlStateManager.disableLighting();
     }

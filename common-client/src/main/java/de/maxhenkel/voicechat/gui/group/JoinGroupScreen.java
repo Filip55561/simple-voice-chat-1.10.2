@@ -45,7 +45,7 @@ public class JoinGroupScreen extends IngameListScreenBase {
         super.initGui();
         guiLeft = guiLeft + 2;
         guiTop = 32;
-        int minUnits = MathHelper.ceil((float) (CELL_HEIGHT + 4) / (float) UNIT_SIZE);
+        int minUnits = MathHelper.ceiling_float_int((float) (CELL_HEIGHT + 4) / (float) UNIT_SIZE);
         units = Math.max(minUnits, (height - HEADER_SIZE - FOOTER_SIZE - guiTop * 2) / UNIT_SIZE);
         ySize = HEADER_SIZE + units * UNIT_SIZE + FOOTER_SIZE;
 
@@ -74,12 +74,12 @@ public class JoinGroupScreen extends IngameListScreenBase {
 
     @Override
     public void renderForeground(int mouseX, int mouseY, float delta) {
-        fontRenderer.drawString(JOIN_CREATE_GROUP.getFormattedText(), guiLeft + xSize / 2 - fontRenderer.getStringWidth(JOIN_CREATE_GROUP.getUnformattedComponentText()) / 2, guiTop + 5, FONT_COLOR);
+    	fontRendererObj.drawString(JOIN_CREATE_GROUP.getFormattedText(), guiLeft + xSize / 2 - fontRendererObj.getStringWidth(JOIN_CREATE_GROUP.getUnformattedComponentText()) / 2, guiTop + 5, FONT_COLOR);
 
         if (groupList != null && !groupList.isEmpty()) {
             groupList.drawScreen(mouseX, mouseY, delta);
         } else {
-            drawCenteredString(fontRenderer, NO_GROUPS.getUnformattedComponentText(), width / 2, guiTop + HEADER_SIZE + (units * UNIT_SIZE) / 2 - fontRenderer.FONT_HEIGHT / 2, -1);
+            drawCenteredString(fontRendererObj, NO_GROUPS.getUnformattedComponentText(), width / 2, guiTop + HEADER_SIZE + (units * UNIT_SIZE) / 2 - fontRendererObj.FONT_HEIGHT / 2, -1);
         }
     }
 

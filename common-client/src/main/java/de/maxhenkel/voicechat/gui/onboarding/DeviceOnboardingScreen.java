@@ -4,6 +4,7 @@ import de.maxhenkel.voicechat.gui.audiodevice.AudioDeviceList;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraftforge.fml.client.FMLClientHandler;
 
 import javax.annotation.Nullable;
 
@@ -22,7 +23,7 @@ public abstract class DeviceOnboardingScreen extends OnboardingScreenBase {
     public void initGui() {
         super.initGui();
 
-        deviceList = createAudioDeviceList(width, contentHeight - fontRenderer.FONT_HEIGHT - BUTTON_HEIGHT - PADDING * 2, guiTop + fontRenderer.FONT_HEIGHT + PADDING);
+        deviceList = createAudioDeviceList(width, contentHeight - fontRendererObj.FONT_HEIGHT - BUTTON_HEIGHT - PADDING * 2, guiTop + fontRendererObj.FONT_HEIGHT + PADDING);
         setList(deviceList);
 
         addBackOrCancelButton(0);

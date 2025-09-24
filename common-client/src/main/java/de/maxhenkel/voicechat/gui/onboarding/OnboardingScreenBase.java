@@ -91,16 +91,16 @@ public abstract class OnboardingScreenBase extends ListScreenBase {
     }
 
     protected void renderTitle(ITextComponent titleComponent) {
-        int titleWidth = fontRenderer.getStringWidth(titleComponent.getUnformattedComponentText());
-        fontRenderer.drawStringWithShadow(titleComponent.getFormattedText(), width / 2 - titleWidth / 2, guiTop, TEXT_COLOR);
+        int titleWidth = fontRendererObj.getStringWidth(titleComponent.getUnformattedComponentText());
+        fontRendererObj.drawStringWithShadow(titleComponent.getFormattedText(), width / 2 - titleWidth / 2, guiTop, TEXT_COLOR);
     }
 
     protected void renderMultilineText(ITextComponent textComponent) {
-        List<String> text = fontRenderer.listFormattedStringToWidth(textComponent.getFormattedText(), contentWidth).stream().flatMap(string -> Arrays.stream(string.split("\\\\n"))).collect(Collectors.toList());
+        List<String> text = fontRendererObj.listFormattedStringToWidth(textComponent.getFormattedText(), contentWidth).stream().flatMap(string -> Arrays.stream(string.split("\\\\n"))).collect(Collectors.toList());
 
         for (int i = 0; i < text.size(); i++) {
             String line = text.get(i);
-            fontRenderer.drawStringWithShadow(line, width / 2 - fontRenderer.getStringWidth(line) / 2, guiTop + fontRenderer.FONT_HEIGHT + 20 + i * (fontRenderer.FONT_HEIGHT + 1), TEXT_COLOR);
+            fontRendererObj.drawStringWithShadow(line, width / 2 - fontRendererObj.getStringWidth(line) / 2, guiTop + fontRendererObj.FONT_HEIGHT + 20 + i * (fontRendererObj.FONT_HEIGHT + 1), TEXT_COLOR);
         }
     }
 

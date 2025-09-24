@@ -39,8 +39,8 @@ public abstract class Slider extends ButtonBase {
     protected void renderSlider(Minecraft mc) {
         mc.getTextureManager().bindTexture(BUTTON_TEXTURES);
         GlStateManager.color(1F, 1F, 1F, 1F);
-        drawTexturedModalRect(x + (int) (value * (float) (width - 8)), y, 0, 66, 4, 20);
-        drawTexturedModalRect(x + (int) (value * (float) (width - 8)) + 4, y, 196, 66, 4, 20);
+        drawTexturedModalRect(xPosition + (int) (value * (float) (width - 8)), yPosition, 0, 66, 4, 20);
+        drawTexturedModalRect(xPosition + (int) (value * (float) (width - 8)) + 4, yPosition, 196, 66, 4, 20);
     }
 
     @Override
@@ -55,8 +55,8 @@ public abstract class Slider extends ButtonBase {
     }
 
     private void updateSliderValue(int mouseX, int mouseY) {
-        value = (double) (mouseX - (x + 4)) / (double) (width - 8);
-        value = MathHelper.clamp(value, 0D, 1D);
+        value = (double) (mouseX - (xPosition + 4)) / (double) (width - 8);
+        value = MathHelper.clamp_double(value, 0D, 1D);
         updateMessage();
     }
 

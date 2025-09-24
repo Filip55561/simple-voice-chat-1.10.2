@@ -13,7 +13,6 @@ import io.netty.channel.local.LocalAddress;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.util.text.TextComponentTranslation;
-
 import javax.annotation.Nullable;
 import java.io.IOException;
 import java.net.InetAddress;
@@ -43,6 +42,7 @@ public class ClientManager {
         keyEvents = new KeyEvents();
         minecraft = Minecraft.getMinecraft();
 
+        
         ClientCompatibilityManager.INSTANCE.onJoinWorld(this::onJoinWorld);
         ClientCompatibilityManager.INSTANCE.onDisconnect(this::onDisconnect);
         ClientCompatibilityManager.INSTANCE.onPublishServer(this::onPublishServer);
@@ -96,7 +96,7 @@ public class ClientManager {
         return inetAddress.getHostAddress();
     }
 
-    private void onJoinWorld() {
+    void onJoinWorld() {
         if (VoicechatClient.CLIENT_CONFIG.muteOnJoin.get()) {
             playerStateManager.setMuted(true);
         }
@@ -109,7 +109,7 @@ public class ClientManager {
         client = new ClientVoicechat();
     }
 
-    private void onDisconnect() {
+    void onDisconnect() {
         if (client != null) {
             client.close();
             client = null;
@@ -181,5 +181,4 @@ public class ClientManager {
         }
         return instance;
     }
-
 }

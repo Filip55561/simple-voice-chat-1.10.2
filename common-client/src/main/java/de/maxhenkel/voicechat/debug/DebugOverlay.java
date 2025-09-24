@@ -11,6 +11,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraftforge.fml.client.FMLClientHandler;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -161,11 +162,11 @@ public class DebugOverlay {
                 continue;
             }
             GlStateManager.pushMatrix();
-            int width = mc.fontRenderer.getStringWidth(text);
+            int width = mc.fontRendererObj.getStringWidth(text);
             ScaledResolution scaledresolution = new ScaledResolution(mc);
-            GlStateManager.translate(scaledresolution.getScaledWidth() - width - LEFT_PADDING, 25F + i * (mc.fontRenderer.FONT_HEIGHT + 1F), 0F);
-            Gui.drawRect(-1, -1, width, mc.fontRenderer.FONT_HEIGHT, 0x90505050);
-            mc.fontRenderer.drawString(text, 0, 0, 0xFFFFFF);
+            GlStateManager.translate(scaledresolution.getScaledWidth() - width - LEFT_PADDING, 25F + i * (mc.fontRendererObj.FONT_HEIGHT + 1F), 0F);
+            Gui.drawRect(-1, -1, width, mc.fontRendererObj.FONT_HEIGHT, 0x90505050);
+            mc.fontRendererObj.drawString(text, 0, 0, 0xFFFFFF);
 
             GlStateManager.popMatrix();
         }

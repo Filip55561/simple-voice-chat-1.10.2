@@ -9,6 +9,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.network.NetworkManager;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -51,7 +52,7 @@ public class ForgeClientCompatibilityManager extends ClientCompatibilityManager 
     public void onRenderName(Entity entity, String str, double x, double y, double z, int maxDistance) {
         renderNameplateEvents.forEach(renderNameplateEvent -> renderNameplateEvent.render(entity, str, x, y, z, maxDistance));
         //TODO Check if player can be seen
-        if (minecraft.player == null /*|| entity.isInvisibleTo(minecraft.player)*/) {
+        if (minecraft.thePlayer == null /*|| entity.isInvisibleTo(minecraft.player)*/) {
             return;
         }
         renderNameplateEvents.forEach(renderNameplateEvent -> renderNameplateEvent.render(entity, str, x, y, z, maxDistance));
@@ -87,7 +88,7 @@ public class ForgeClientCompatibilityManager extends ClientCompatibilityManager 
     @SubscribeEvent
     public void onChangeServer(FMLNetworkEvent.ClientConnectedToServerEvent event) {
         // Only run if changing the server while already in game
-        if (minecraft.player == null) {
+        if (minecraft.thePlayer == null) {
             return;
         }
         changingServer = true;

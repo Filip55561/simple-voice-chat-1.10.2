@@ -15,6 +15,7 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.client.FMLClientHandler;
 
 public class GroupEntry extends ListScreenEntryBase {
 
@@ -39,8 +40,8 @@ public class GroupEntry extends ListScreenEntryBase {
     }
 
     @Override
-    public void drawEntry(int slotIndex, int x, int y, int listWidth, int slotHeight, int mouseX, int mouseY, boolean isSelected, float partialTicks) {
-        super.drawEntry(slotIndex, x, y, listWidth, slotHeight, mouseX, mouseY, isSelected, partialTicks);
+    public void drawEntry(int slotIndex, int x, int y, int listWidth, int slotHeight, int mouseX, int mouseY, boolean isSelected) {
+        super.drawEntry(slotIndex, x, y, listWidth, slotHeight, mouseX, mouseY, isSelected);
         GuiScreen.drawRect(x, y, x + listWidth, y + slotHeight, BG_FILL);
 
         GlStateManager.pushMatrix();
@@ -77,13 +78,13 @@ public class GroupEntry extends ListScreenEntryBase {
         }
         GlStateManager.popMatrix();
 
-        minecraft.fontRenderer.drawString(state.getName(), x + PADDING + outlineSize + PADDING, y + slotHeight / 2 - minecraft.fontRenderer.FONT_HEIGHT / 2, PLAYER_NAME_COLOR);
+        minecraft.fontRendererObj.drawString(state.getName(), x + PADDING + outlineSize + PADDING, y + slotHeight / 2 - minecraft.fontRendererObj.FONT_HEIGHT / 2, PLAYER_NAME_COLOR);
 
         if (isSelected && !ClientManager.getPlayerStateManager().getOwnID().equals(state.getUuid())) {
-            volumeSlider.setWidth(Math.min(listWidth - (PADDING + outlineSize + PADDING + minecraft.fontRenderer.getStringWidth(state.getName()) + PADDING + PADDING), 100));
-            volumeSlider.x = x + (listWidth - volumeSlider.width - PADDING);
-            volumeSlider.y = y + (slotHeight - volumeSlider.height) / 2;
-            volumeSlider.drawButton(minecraft, mouseX, mouseY, partialTicks);
+            volumeSlider.setWidth(Math.min(listWidth - (PADDING + outlineSize + PADDING + minecraft.fontRendererObj.getStringWidth(state.getName()) + PADDING + PADDING), 100));
+            volumeSlider.xPosition = x + (listWidth - volumeSlider.width - PADDING);
+            volumeSlider.yPosition = y + (slotHeight - volumeSlider.height) / 2;
+            volumeSlider.drawButton(minecraft, mouseX, mouseY);
         }
     }
 
@@ -94,4 +95,9 @@ public class GroupEntry extends ListScreenEntryBase {
     public void setState(PlayerState state) {
         this.state = state;
     }
+
+	@Override
+	public void setSelected(int p_178011_1_, int p_178011_2_, int p_178011_3_) {
+		
+	}
 }

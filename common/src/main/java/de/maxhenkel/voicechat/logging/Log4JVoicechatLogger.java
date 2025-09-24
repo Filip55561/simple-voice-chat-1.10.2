@@ -6,7 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.Appender;
 import org.apache.logging.log4j.core.config.Configurator;
-import org.apache.logging.log4j.util.StackLocatorUtil;
+//import org.apache.logging.log4j.util.StackLocatorUtil;
 
 import java.util.Map;
 
@@ -39,7 +39,9 @@ public class Log4JVoicechatLogger implements VoicechatLogger {
         org.apache.logging.log4j.core.Logger coreLogger = (org.apache.logging.log4j.core.Logger) logger;
         Map<String, Appender> appenders = coreLogger.getAppenders();
         coreLogger.setAdditive(false);
-        Configurator.setLevel(logger.getName(), Level.DEBUG);
+        // MIGHT BE WRONG
+        coreLogger.setLevel(Level.DEBUG);
+        //Configurator.setLevel(logger.getName(), Level.DEBUG);
         for (Appender appender : appenders.values()) {
             coreLogger.addAppender(appender);
         }
@@ -74,11 +76,14 @@ public class Log4JVoicechatLogger implements VoicechatLogger {
                 return Level.INFO;
         }
     }
+    
+    // MIGHT BE WRONG
 
     private String modifyMessage(String message) {
-        if (debugMode) {
+        /*if (debugMode) {
             return String.format("[%s/%s] %s", logger.getName(), StackLocatorUtil.getCallerClass(4).getSimpleName(), message);
         }
+        */
         return String.format("[%s] %s", logger.getName(), message);
     }
 

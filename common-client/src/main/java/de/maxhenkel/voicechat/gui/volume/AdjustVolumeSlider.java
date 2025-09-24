@@ -49,11 +49,11 @@ public class AdjustVolumeSlider extends DebouncedSlider {
         int greenWidth = (int) ((double) width * yellowPerc);
         int yellowWidth = (int) ((double) width * redPerc) - greenWidth;
 
-        GuiScreen.drawRect(x, y, x + Math.min(greenWidth, barWidth), y + 1, 0xFF00FF00);
+        GuiScreen.drawRect(xPosition, yPosition, xPosition + Math.min(greenWidth, barWidth), yPosition + 1, 0xFF00FF00);
         if (barWidth > greenWidth) {
-            GuiScreen.drawRect(x + greenWidth, y, x + Math.min(greenWidth + yellowWidth, barWidth), y + 1, 0xFFFFFF00);
+            GuiScreen.drawRect(xPosition + greenWidth, yPosition, xPosition + Math.min(greenWidth + yellowWidth, barWidth), yPosition + 1, 0xFFFFFF00);
             if (barWidth > greenWidth + yellowWidth) {
-                GuiScreen.drawRect(x + greenWidth + yellowWidth, y, x + Math.min(width, barWidth), y + 1, 0xFFFF0000);
+                GuiScreen.drawRect(xPosition + greenWidth + yellowWidth, yPosition, xPosition + Math.min(width, barWidth), yPosition + 1, 0xFFFF0000);
             }
         }
     }

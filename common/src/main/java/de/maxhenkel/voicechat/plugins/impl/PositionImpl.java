@@ -19,17 +19,17 @@ public class PositionImpl implements Position {
 
     @Override
     public double getX() {
-        return position.x;
+        return position.xCoord;
     }
 
     @Override
     public double getY() {
-        return position.y;
+        return position.yCoord;
     }
 
     @Override
     public double getZ() {
-        return position.z;
+        return position.zCoord;
     }
 
     public Vec3d getPosition() {

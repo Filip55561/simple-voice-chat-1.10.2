@@ -1,9 +1,9 @@
 package de.maxhenkel.voicechat.gui.widgets;
 
 import de.maxhenkel.voicechat.VoicechatClient;
+import de.maxhenkel.voicechat.gui.ScreenBase;
 import de.maxhenkel.voicechat.natives.SpeexManager;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
@@ -18,9 +18,9 @@ public class AgcButton extends BooleanConfigButton {
     private static final ITextComponent MANUAL_WARNING = new TextComponentTranslation("message.voicechat.gain.manual.warning").setStyle(new Style().setColor(TextFormatting.RED));
 
     private final Consumer<Boolean> onChange;
-    private final GuiScreen parent;
+    private final ScreenBase parent;
 
-    public AgcButton(int id, GuiScreen parent, int x, int y, int width, int height, Consumer<Boolean> onChange) {
+    public AgcButton(int id, ScreenBase parent, int x, int y, int width, int height, Consumer<Boolean> onChange) {
         super(id, x, y, width, height, VoicechatClient.CLIENT_CONFIG.agc, enabled -> {
             TextComponentTranslation translatable = new TextComponentTranslation("message.voicechat.gain", enabled ? AUTO : MANUAL);
             if (!enabled) {
@@ -51,7 +51,7 @@ public class AgcButton extends BooleanConfigButton {
             return;
         }
         if (!entry.get()) {
-            parent.drawHoveringText(Minecraft.getMinecraft().fontRenderer.listFormattedStringToWidth(MANUAL_WARNING.getFormattedText(), 200), mouseX, mouseY);
+            parent.drawTooltip(Minecraft.getMinecraft().fontRendererObj.listFormattedStringToWidth(MANUAL_WARNING.getFormattedText(), 200), mouseX, mouseY);
         }
     }
 

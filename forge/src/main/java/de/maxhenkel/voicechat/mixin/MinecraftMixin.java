@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Minecraft.class)
 public class MinecraftMixin {
-
+	
     @Inject(method = "runTickMouse", at = @At("RETURN"))
     public void runTickMouse(CallbackInfo info) {
         ((ForgeClientCompatibilityManager) ClientCompatibilityManager.INSTANCE).onTickMouse();

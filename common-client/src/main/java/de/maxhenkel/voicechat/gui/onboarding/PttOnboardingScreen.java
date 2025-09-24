@@ -46,7 +46,7 @@ public class PttOnboardingScreen extends OnboardingScreenBase {
         super.drawScreen(mouseX, mouseY, partialTicks);
         renderTitle(TITLE);
         renderMultilineText(DESCRIPTION);
-        fontRenderer.drawStringWithShadow(BUTTON_DESCRIPTION.getFormattedText(), width / 2 - fontRenderer.getStringWidth(BUTTON_DESCRIPTION.getUnformattedComponentText()) / 2, keybindButtonPos - fontRenderer.FONT_HEIGHT - PADDING, TEXT_COLOR);
+        fontRendererObj.drawStringWithShadow(BUTTON_DESCRIPTION.getFormattedText(), width / 2 - fontRendererObj.getStringWidth(BUTTON_DESCRIPTION.getUnformattedComponentText()) / 2, keybindButtonPos - fontRendererObj.FONT_HEIGHT - PADDING, TEXT_COLOR);
     }
 
     @Override

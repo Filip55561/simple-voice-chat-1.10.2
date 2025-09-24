@@ -40,7 +40,7 @@ public class EnterPasswordScreen extends VoiceChatScreenBase {
 
         Keyboard.enableRepeatEvents(true);
 
-        password = new GuiTextField(0, fontRenderer, guiLeft + 7, guiTop + 7 + (fontRenderer.FONT_HEIGHT + 5) * 2 - 5 + 1, xSize - 7 * 2, 12);
+        password = new GuiTextField(0, fontRendererObj, guiLeft + 7, guiTop + 7 + (fontRendererObj.FONT_HEIGHT + 5) * 2 - 5 + 1, xSize - 7 * 2, 12);
         password.setMaxStringLength(32);
         password.setValidator(s -> s.isEmpty() || Voicechat.GROUP_REGEX.matcher(s).matches());
 
@@ -86,8 +86,8 @@ public class EnterPasswordScreen extends VoiceChatScreenBase {
         if (password != null) {
             password.drawTextBox();
         }
-        fontRenderer.drawString(ENTER_GROUP_PASSWORD.getUnformattedComponentText(), guiLeft + xSize / 2 - fontRenderer.getStringWidth(ENTER_GROUP_PASSWORD.getUnformattedComponentText()) / 2, guiTop + 7, FONT_COLOR);
-        fontRenderer.drawString(PASSWORD.getUnformattedComponentText(), guiLeft + 8, guiTop + 7 + fontRenderer.FONT_HEIGHT + 5, FONT_COLOR);
+        fontRendererObj.drawString(ENTER_GROUP_PASSWORD.getUnformattedComponentText(), guiLeft + xSize / 2 - fontRendererObj.getStringWidth(ENTER_GROUP_PASSWORD.getUnformattedComponentText()) / 2, guiTop + 7, FONT_COLOR);
+        fontRendererObj.drawString(PASSWORD.getUnformattedComponentText(), guiLeft + 8, guiTop + 7 + fontRendererObj.FONT_HEIGHT + 5, FONT_COLOR);
     }
 
     @Override

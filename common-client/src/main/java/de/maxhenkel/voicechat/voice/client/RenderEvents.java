@@ -8,7 +8,7 @@ import de.maxhenkel.voicechat.plugins.ClientPluginManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -16,6 +16,7 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.client.FMLClientHandler;
 
 import java.util.UUID;
 
@@ -117,7 +118,7 @@ public class RenderEvents {
             return;
         }
         EntityPlayer player = (EntityPlayer) entity;
-        if (entity == minecraft.player) {
+        if (entity == minecraft.thePlayer) {
             return;
         }
 
@@ -165,7 +166,7 @@ public class RenderEvents {
 
         GlStateManager.enableBlend();
         GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-        int halfNameWidth = minecraft.fontRenderer.getStringWidth(str) / 2;
+        int halfNameWidth = minecraft.fontRendererObj.getStringWidth(str) / 2;
         GlStateManager.translate(halfNameWidth, verticalShift - 1F, 0F);
         if (!entity.isSneaking()) {
             drawIcon(texture, true);
@@ -179,11 +180,14 @@ public class RenderEvents {
         GlStateManager.color(1F, 1F, 1F, 1F);
         GlStateManager.popMatrix();
     }
+    
+    
+    // COULD BE A MISTAKE
 
     private void drawIcon(ResourceLocation texture, boolean transparent) {
         minecraft.getTextureManager().bindTexture(texture);
         Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder bufferbuilder = tessellator.getBuffer();
+        VertexBuffer bufferbuilder = tessellator.getBuffer();
         bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
         bufferbuilder.pos(2D, 10D, 0D).tex(0D, 1D).color(255, 255, 255, transparent ? 32 : 255).endVertex();
         bufferbuilder.pos(2D + 10D, 10D, 0D).tex(1D, 1D).color(255, 255, 255, transparent ? 32 : 255).endVertex();

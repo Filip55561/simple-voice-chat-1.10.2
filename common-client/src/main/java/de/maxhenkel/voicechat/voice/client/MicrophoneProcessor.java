@@ -1,9 +1,10 @@
 package de.maxhenkel.voicechat.voice.client;
 
-import de.maxhenkel.voicechat.Voicechat;
-import de.maxhenkel.voicechat.VoicechatClient;
+
 import de.maxhenkel.voicechat.natives.Agc;
 import de.maxhenkel.voicechat.natives.Denoiser;
+import de.maxhenkel.voicechat.Voicechat;
+import de.maxhenkel.voicechat.VoicechatClient;
 import de.maxhenkel.voicechat.natives.RNNoiseManager;
 import de.maxhenkel.voicechat.natives.SpeexManager;
 

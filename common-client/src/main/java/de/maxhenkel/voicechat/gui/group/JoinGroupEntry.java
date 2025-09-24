@@ -14,6 +14,7 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.*;
+import net.minecraftforge.fml.client.FMLClientHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,8 +42,8 @@ public class JoinGroupEntry extends ListScreenEntryBase {
     }
 
     @Override
-    public void drawEntry(int slotIndex, int x, int y, int listWidth, int slotHeight, int mouseX, int mouseY, boolean isSelected, float partialTicks) {
-        super.drawEntry(slotIndex, x, y, listWidth, slotHeight, mouseX, mouseY, isSelected, partialTicks);
+    public void drawEntry(int slotIndex, int x, int y, int listWidth, int slotHeight, int mouseX, int mouseY, boolean isSelected) {
+        super.drawEntry(slotIndex, x, y, listWidth, slotHeight, mouseX, mouseY, isSelected);
         if (isSelected) {
             GuiScreen.drawRect(x, y, x + listWidth, y + slotHeight, BG_FILL_SELECTED);
         } else {
@@ -61,9 +62,9 @@ public class JoinGroupEntry extends ListScreenEntryBase {
             GlStateManager.popMatrix();
         }
 
-        minecraft.fontRenderer.drawString(group.group.getName(), x + PADDING + (hasPassword ? 16 + PADDING : 0), y + slotHeight / 2 - minecraft.fontRenderer.FONT_HEIGHT / 2, PLAYER_NAME_COLOR);
+        minecraft.fontRendererObj.drawString(group.group.getName(), x + PADDING + (hasPassword ? 16 + PADDING : 0), y + slotHeight / 2 - minecraft.fontRendererObj.FONT_HEIGHT / 2, PLAYER_NAME_COLOR);
 
-        int textWidth = minecraft.fontRenderer.getStringWidth(group.group.getName()) + (hasPassword ? 16 + PADDING : 0);
+        int textWidth = minecraft.fontRendererObj.getStringWidth(group.group.getName()) + (hasPassword ? 16 + PADDING : 0);
 
         int headsPerRow = (listWidth - (PADDING + textWidth + PADDING + PADDING)) / (SKIN_SIZE + 1);
         int rows = 2;
@@ -120,7 +121,7 @@ public class JoinGroupEntry extends ListScreenEntryBase {
         }
 
         parent.postRender(() -> {
-            parent.drawHoveringText(tooltip, mouseX, mouseY);
+            parent.drawTooltip(tooltip, mouseX, mouseY);
         });
     }
 
@@ -145,5 +146,9 @@ public class JoinGroupEntry extends ListScreenEntryBase {
             return members;
         }
     }
+
+	@Override
+	public void setSelected(int p_178011_1_, int p_178011_2_, int p_178011_3_) {
+	}
 
 }

@@ -85,7 +85,7 @@ public class NetworkMessage {
             Voicechat.LOGGER.debug("Received invalid packet from {}", packet.getSocketAddress());
             return null;
         }
-        UUID playerID = b.readUniqueId();
+        UUID playerID = b.readUuid();
         if (!server.hasSecret(playerID)) {
             if (PingHandler.onPacket(server, packet.getSocketAddress(), playerID, b)) {
                 return null;

@@ -1,8 +1,9 @@
 package de.maxhenkel.voicechat.gui.tooltips;
 
+import de.maxhenkel.voicechat.gui.ScreenBase;
 import de.maxhenkel.voicechat.gui.widgets.ImageButton;
 import de.maxhenkel.voicechat.voice.client.ClientPlayerStateManager;
-import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.Minecraft;
 import net.minecraft.util.text.TextComponentTranslation;
 
 import java.util.ArrayList;
@@ -14,10 +15,10 @@ public class DisableTooltipSupplier implements ImageButton.TooltipSupplier {
     public static final TextComponentTranslation DISABLE_DISABLED = new TextComponentTranslation("message.voicechat.disable.disabled");
     public static final TextComponentTranslation DISABLE_NO_SPEAKER = new TextComponentTranslation("message.voicechat.disable.no_speaker");
 
-    private final GuiScreen screen;
+    private final ScreenBase screen;
     private final ClientPlayerStateManager stateManager;
 
-    public DisableTooltipSupplier(GuiScreen screen, ClientPlayerStateManager stateManager) {
+    public DisableTooltipSupplier(ScreenBase screen, ClientPlayerStateManager stateManager) {
         this.screen = screen;
         this.stateManager = stateManager;
     }
@@ -34,7 +35,7 @@ public class DisableTooltipSupplier implements ImageButton.TooltipSupplier {
             tooltip.add(DISABLE_DISABLED.getUnformattedComponentText());
         }
 
-        screen.drawHoveringText(tooltip, mouseX, mouseY);
+        screen.drawTooltip(tooltip, mouseX, mouseY);
     }
 
 }

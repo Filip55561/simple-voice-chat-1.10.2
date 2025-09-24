@@ -7,6 +7,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.util.math.Vec2f;
 import net.minecraft.util.math.Vec3d;
+import net.minecraftforge.fml.client.FMLClientHandler;
 
 import javax.annotation.Nullable;
 
@@ -22,10 +23,10 @@ public class PositionalAudioUtils {
      */
     private static float[] getStereoVolume(Vec3d cameraPos, float yRot, Vec3d soundPos) {
         Vec3d d = soundPos.subtract(cameraPos).normalize();
-        Vec2f diff = new Vec2f((float) d.x, (float) d.z);
+        Vec2f diff = new Vec2f((float) d.xCoord, (float) d.zCoord);
         float diffAngle = Utils.angle(diff, new Vec2f(-1F, 0F));
         float angle = Utils.normalizeAngle(diffAngle - (yRot % 360F));
-        float dif = (float) (Math.abs(cameraPos.y - soundPos.y) / 32);
+        float dif = (float) (Math.abs(cameraPos.yCoord - soundPos.yCoord) / 32);
 
         float rot = angle / 180F;
         float perc = rot;
@@ -53,7 +54,7 @@ public class PositionalAudioUtils {
      * @return a float array of length 2, containing the left and right volume (0-1)
      */
     private static float[] getStereoVolume(Vec3d soundPos) {
-        return getStereoVolume(getCameraPosition(), mc.player != null ? mc.player.rotationYaw : 0F, soundPos);
+        return getStereoVolume(getCameraPosition(), mc.thePlayer != null ? mc.thePlayer.rotationYaw : 0F, soundPos);
     }
 
     /**
@@ -189,7 +190,9 @@ public class PositionalAudioUtils {
     }
 
     public static Vec3d getCameraPosition() {
-        return ActiveRenderInfo.getCameraPosition().add(mc.player == null ? Vec3d.ZERO : mc.player.getPositionVector());
+    	// might be wrong
+        //return ActiveRenderInfo.getCameraPosition().add(mc.thePlayer == null ? Vec3d.ZERO : mc.thePlayer.getPositionVector());
+    	return ActiveRenderInfo.getPosition().add(mc.thePlayer == null ? Vec3d.ZERO : mc.thePlayer.getPositionVector());
     }
 
 }

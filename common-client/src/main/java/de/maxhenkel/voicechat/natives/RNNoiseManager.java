@@ -1,7 +1,6 @@
 package de.maxhenkel.voicechat.natives;
 
 import de.maxhenkel.voicechat.Voicechat;
-
 import javax.annotation.Nullable;
 
 public class RNNoiseManager extends NativeValidator {

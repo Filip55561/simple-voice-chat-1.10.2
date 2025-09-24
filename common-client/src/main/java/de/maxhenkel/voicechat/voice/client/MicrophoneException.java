@@ -7,9 +7,8 @@ public class MicrophoneException extends IOException {
     public MicrophoneException(String message) {
         super(message);
     }
-
+    
     public MicrophoneException(Exception cause) {
         super(cause);
     }
-
 }

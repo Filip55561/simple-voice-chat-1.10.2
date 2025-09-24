@@ -4,6 +4,7 @@ import de.maxhenkel.voicechat.gui.widgets.MicTestButton;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraftforge.fml.client.FMLClientHandler;
 
 import javax.annotation.Nullable;
 import java.util.function.Supplier;
@@ -18,13 +19,13 @@ public class MicrophoneAudioDeviceEntry extends AudioDeviceEntry {
     }
 
     @Override
-    public void drawEntry(int slotIndex, int left, int top, int width, int height, int mouseX, int mouseY, boolean hovered, float partialTicks) {
-        super.drawEntry(slotIndex, left, top, width, height, mouseX, mouseY, hovered, partialTicks);
+    public void drawEntry(int slotIndex, int left, int top, int width, int height, int mouseX, int mouseY, boolean hovered) {
+        super.drawEntry(slotIndex, left, top, width, height, mouseX, mouseY, hovered);
         boolean selected = isSelected.get();
         if (selected && (hovered || testButton.isMicActive())) {
-            testButton.x = left + (width - testButton.width - PADDING);
-            testButton.y = top + (height - testButton.height) / 2;
-            testButton.drawButton(Minecraft.getMinecraft(), mouseX, mouseY, partialTicks);
+            testButton.xPosition = left + (width - testButton.width - PADDING);
+            testButton.yPosition = top + (height - testButton.height) / 2;
+            testButton.drawButton(Minecraft.getMinecraft(), mouseX, mouseY);
         }
     }
 

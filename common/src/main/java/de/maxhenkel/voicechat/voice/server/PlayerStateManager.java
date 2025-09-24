@@ -44,7 +44,7 @@ public class PlayerStateManager {
 
     public void broadcastState(@Nullable EntityPlayerMP stateOwner, PlayerState state) {
         PlayerStatePacket packet = new PlayerStatePacket(state);
-        for (EntityPlayerMP receiver : voicechatServer.getServer().getPlayerList().getPlayers()) {
+        for (EntityPlayerMP receiver : voicechatServer.getServer().getPlayerList().getPlayerList()) {
             if (stateOwner != null && !CommonCompatibilityManager.INSTANCE.canSee(receiver, stateOwner)) {
                 continue;
             }
@@ -53,9 +53,11 @@ public class PlayerStateManager {
         PluginManager.instance().onPlayerStateChanged(state);
     }
 
+    // THIS GETPLAYERLIST MAY BE WRONG
+    
     public void broadcastRemoveState(EntityPlayerMP stateOwner) {
         RemovePlayerStatePacket packet = new RemovePlayerStatePacket(stateOwner.getUniqueID());
-        for (EntityPlayerMP receiver : voicechatServer.getServer().getPlayerList().getPlayers()) {
+        for (EntityPlayerMP receiver : voicechatServer.getServer().getPlayerList().getPlayerList()) {
             NetManager.sendToClient(receiver, packet);
         }
         // Send the default disconnected state to the API when disconnecting

@@ -19,6 +19,7 @@ import net.minecraft.util.text.*;
 
 import javax.annotation.Nullable;
 import java.io.IOException;
+import java.util.Collections;
 
 public class VoiceChatScreen extends VoiceChatScreenBase {
 
@@ -62,7 +63,7 @@ public class VoiceChatScreen extends VoiceChatScreenBase {
         ImageButton volumes = new ImageButton(2, guiLeft + 6 + 20 + 2 + 20 + 2, guiTop + ySize - 6 - 20, VOLUMES, button -> {
             mc.displayGuiScreen(new AdjustVolumesScreen());
         }, (button, mouseX, mouseY) -> {
-            drawHoveringText(ADJUST_PLAYER_VOLUMES.getUnformattedComponentText(), mouseX, mouseY);
+        	drawTooltip(Collections.singletonList(ADJUST_PLAYER_VOLUMES.getUnformattedComponentText()), mouseX, mouseY);
         });
         addButton(volumes);
 
@@ -144,17 +145,17 @@ public class VoiceChatScreen extends VoiceChatScreenBase {
 
     @Override
     public void renderForeground(int mouseX, int mouseY, float delta) {
-        int titleWidth = fontRenderer.getStringWidth(TITLE.getUnformattedComponentText());
-        fontRenderer.drawString(TITLE.getUnformattedComponentText(), guiLeft + (xSize - titleWidth) / 2, guiTop + 7, FONT_COLOR);
+        int titleWidth = fontRendererObj.getStringWidth(TITLE.getUnformattedComponentText());
+        fontRendererObj.drawString(TITLE.getUnformattedComponentText(), guiLeft + (xSize - titleWidth) / 2, guiTop + 7, FONT_COLOR);
 
         ClientVoicechat client = ClientManager.getClient();
         if (client != null && client.getRecorder() != null) {
             AudioRecorder recorder = client.getRecorder();
             TextComponentString time = new TextComponentString(recorder.getDuration());
-            fontRenderer.drawString(time.setStyle(new Style().setColor(TextFormatting.DARK_RED)).getFormattedText(), guiLeft + recordingHoverArea.getPosX() + recordingHoverArea.getWidth() / 2 - fontRenderer.getStringWidth(time.getUnformattedComponentText()) / 2, guiTop + recordingHoverArea.getPosY() + recordingHoverArea.getHeight() / 2 - fontRenderer.FONT_HEIGHT / 2, 0);
+            fontRendererObj.drawString(time.setStyle(new Style().setColor(TextFormatting.DARK_RED)).getFormattedText(), guiLeft + recordingHoverArea.getPosX() + recordingHoverArea.getWidth() / 2 - fontRendererObj.getStringWidth(time.getUnformattedComponentText()) / 2, guiTop + recordingHoverArea.getPosY() + recordingHoverArea.getHeight() / 2 - fontRendererObj.FONT_HEIGHT / 2, 0);
 
             if (recordingHoverArea.isHovered(guiLeft, guiTop, mouseX, mouseY)) {
-                drawHoveringText(new TextComponentTranslation("message.voicechat.storage_size", recorder.getStorage()).getUnformattedComponentText(), mouseX, mouseY);
+            	drawTooltip(Collections.singletonList(new TextComponentTranslation("message.voicechat.storage_size", recorder.getStorage()).getUnformattedComponentText()), mouseX, mouseY);
             }
         }
     }

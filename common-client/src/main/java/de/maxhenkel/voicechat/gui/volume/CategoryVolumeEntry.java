@@ -1,5 +1,7 @@
 package de.maxhenkel.voicechat.gui.volume;
 
+import java.util.Collections;
+
 import de.maxhenkel.voicechat.VoicechatClient;
 import de.maxhenkel.voicechat.plugins.impl.VolumeCategoryImpl;
 import de.maxhenkel.voicechat.voice.client.ClientManager;
@@ -25,14 +27,14 @@ public class CategoryVolumeEntry extends VolumeEntry {
     }
 
     @Override
-    public void renderElement(int slotIndex, int x, int y, int listWidth, int slotHeight, int mouseX, int mouseY, boolean isSelected, float partialTicks, int skinX, int skinY, int textX, int textY) {
+    public void renderElement(int slotIndex, int x, int y, int listWidth, int slotHeight, int mouseX, int mouseY, boolean isSelected, int skinX, int skinY, int textX, int textY) {
         GlStateManager.color(1F, 1F, 1F, 1F);
         minecraft.getTextureManager().bindTexture(texture);
         Gui.drawScaledCustomSizeModalRect(skinX, skinY, 16, 16, 16, 16, SKIN_SIZE, SKIN_SIZE, 16, 16);
-        minecraft.fontRenderer.drawString(category.getDisplayName().getFormattedText(), textX, textY, PLAYER_NAME_COLOR);
+        minecraft.fontRendererObj.drawString(category.getDisplayName().getFormattedText(), textX, textY, PLAYER_NAME_COLOR);
         if (isSelected && category.getDescription() != null) {
             screen.postRender(() -> {
-                screen.drawHoveringText(category.getDisplayDescription().getFormattedText(), mouseX, mouseY);
+                screen.drawTooltip(Collections.singletonList(category.getDisplayDescription().getFormattedText()), mouseX, mouseY);
             });
         }
     }
@@ -65,5 +67,9 @@ public class CategoryVolumeEntry extends VolumeEntry {
             return client.getTalkCache().getCategoryAudioLevel(category);
         }
     }
+
+	@Override
+	public void setSelected(int p_178011_1_, int p_178011_2_, int p_178011_3_) {
+	}
 
 }

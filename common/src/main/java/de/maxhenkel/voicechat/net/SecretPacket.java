@@ -90,13 +90,13 @@ public class SecretPacket implements Packet<SecretPacket> {
     public SecretPacket fromBytes(PacketBuffer buf) {
         secret = Secret.fromBytes(buf);
         serverPort = buf.readInt();
-        playerUUID = buf.readUniqueId();
+        playerUUID = buf.readUuid();
         codec = ServerConfig.Codec.values()[buf.readByte()];
         mtuSize = buf.readInt();
         voiceChatDistance = buf.readDouble();
         keepAlive = buf.readInt();
         groupsEnabled = buf.readBoolean();
-        voiceHost = buf.readString(32767);
+        voiceHost = buf.readStringFromBuffer(32767);
         allowRecording = buf.readBoolean();
         return this;
     }
@@ -105,7 +105,7 @@ public class SecretPacket implements Packet<SecretPacket> {
     public void toBytes(PacketBuffer buf) {
         secret.toBytes(buf);
         buf.writeInt(serverPort);
-        buf.writeUniqueId(playerUUID);
+        buf.writeUuid(playerUUID);
         buf.writeByte(codec.ordinal());
         buf.writeInt(mtuSize);
         buf.writeDouble(voiceChatDistance);
