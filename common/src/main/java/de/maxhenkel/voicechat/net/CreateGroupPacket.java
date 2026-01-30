@@ -1,5 +1,6 @@
 package de.maxhenkel.voicechat.net;
 
+import de.maxhenkel.voicechat.Voicechat;
 import de.maxhenkel.voicechat.api.Group;
 import de.maxhenkel.voicechat.plugins.impl.GroupImpl;
 import net.minecraft.network.PacketBuffer;
@@ -46,10 +47,10 @@ public class CreateGroupPacket implements Packet<CreateGroupPacket> {
 
     @Override
     public CreateGroupPacket fromBytes(PacketBuffer buf) {
-        name = buf.readStringFromBuffer(512);
+    	name = buf.readStringFromBuffer(Voicechat.MAX_GROUP_NAME_LENGTH);
         password = null;
         if (buf.readBoolean()) {
-            password = buf.readStringFromBuffer(512);
+        	password = buf.readStringFromBuffer(Voicechat.MAX_GROUP_NAME_LENGTH);
         }
         type = GroupImpl.TypeImpl.fromInt(buf.readShort());
         return this;
