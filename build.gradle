@@ -20,7 +20,7 @@ apply plugin: 'com.github.johnrengelman.shadow'
 
 //Only edit below this line, the above code adds and enables the nessasary things for Forge to be setup.
 
-version = "1.0.3"
+version = "1.10.2-2.6.12"
 ext {
      mod_compatible_version= "2.6.x"
 }
