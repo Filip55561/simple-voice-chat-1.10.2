@@ -1,4 +1,3 @@
-*Forked from: https://github.com/henkelmax/simple-voice-chat/tree/1.12.2*
 [Modrinth](https://modrinth.com/mod/simple-voice-chat)
 |
 [CurseForge](https://legacy.curseforge.com/minecraft/mc-mods/simple-voice-chat)
@@ -12,6 +11,8 @@
 [Credits](https://modrepo.de/minecraft/voicechat/credits)
 |
 [API](https://modrepo.de/minecraft/voicechat/api)
+
+*Forked from: https://github.com/henkelmax/simple-voice-chat/tree/1.12.2*
 
 # Simple Voice Chat
 
