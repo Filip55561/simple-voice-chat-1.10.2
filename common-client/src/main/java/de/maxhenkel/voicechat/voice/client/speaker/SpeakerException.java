@@ -8,4 +8,7 @@ public class SpeakerException extends IOException {
         super(message);
     }
 
+    public SpeakerException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }
